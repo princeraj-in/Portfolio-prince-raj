@@ -17,6 +17,28 @@ Key Profile Knowledge:
   1. Autonomous AI & Agentic Workflows: Multi-agent systems (LangGraph, CrewAI), RAG architectures, custom LLM fine-tuning, Vector databases (Chroma, Pinecone, Qdrant).
   2. Quantitative Trading & Computing: Algorithmic modeling, statistical arbitrage logic, high-frequency execution pipelines, risk metrics.
   3. Scalable High-Performance Engineering: Modern full-stack architecture with React 19, TypeScript, Node.js, Fastify/Express, Docker, and Cloud infrastructure.
+- Featured Production Projects & Platforms:
+  1. LensDrop:
+     - Overview: Modern wedding and event memory-sharing platform. Hosts create an event and generate a live QR code or digital invitation, while guests upload original photos and videos directly from their phones without installing an app or creating an account.
+     - Key Capabilities: QR-based instant guest uploads, zero guest account/app installation required, real-time live event media galleries, client-side canvas image compression, drag-and-drop file uploads, 1-click ZIP archive export, host privacy permissions, and super admin console.
+     - Tech Stack: React 19, TypeScript, Vite, Tailwind CSS, Firebase Auth, Cloud Firestore, Cloudinary Media Delivery, Motion.
+     - Live Production: https://lensdrop.imprince.me
+     - GitHub Repository: https://github.com/princeraj-in/Lensdrop
+  2. City Helpline:
+     - Overview: A hyper-local student ecosystem platform designed to simplify student life across major Indian education and coaching hubs.
+     - Key Features:
+       * Smart Local Discovery: Find PGs, hostels, mess/tiffin services, libraries, coaching centres, and study spaces.
+       * AI Mitra: Gemini-powered student assistant for local guidance, safety, and accommodation-related queries in Hindi and English.
+       * Real-Time Messaging: In-app 1-to-1 chat between students, property owners, and marketplace sellers.
+       * Verification System: Verified student and PG badges with protected verification data.
+       * Student Marketplace: Buy & sell used books, furniture, electronics, cycles, and other student essentials.
+       * Roommate Matching: Discover compatible roommates based on budget, exam goals, and lifestyle.
+       * Budget Intelligence: Estimate and visualize monthly living expenses using city-specific benchmarks.
+       * PWA Experience: Installable app with responsive mobile, tablet, and desktop support plus offline caching.
+       * Bilingual UI: Full Hindi & English experience for wider accessibility.
+     - Tech Stack: React 19, TypeScript, Vite, Tailwind CSS, Firebase, Firestore, Google Gemini AI, Cloudinary, Express, Vercel.
+     - Live Production: https://app.imprince.me
+     - GitHub Repository: https://github.com/princeraj-in/CityHelpline
 - Verified Global Accreditations & Certifications (7 verified credentials):
   - Google: Connect and Protect: Networks and Network Security
   - Google Cloud: Introduction to Large Language Models (LLMs)

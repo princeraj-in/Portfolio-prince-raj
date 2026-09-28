@@ -71,7 +71,11 @@ Whether accessed via the interactive single-page portfolio at [`imprince.me`](ht
 * **Glassmorphism & Neon Glow**: Carefully tuned HSB color palette featuring cyan, electric blue, and deep slate accents with WCAG AA compliance.
 * **Physics & Motion**: Powered by `motion/react` for buttery route transitions, scroll triggers, and active cursor spotlights.
 
-### 3. 🛡️ Enterprise Security & Serverless Architecture
+### 3. 🚀 Featured Production Platforms & Deployments
+* **LensDrop ([Live App](https://lensdrop.imprince.me) | [GitHub](https://github.com/princeraj-in/Lensdrop))**: A modern wedding and event memory-sharing platform. Guests scan live QR codes to upload uncompressed 4K media directly from their native smartphone cameras without downloading apps or creating accounts. Features real-time Firestore synchronization, client-side canvas compression, one-click ZIP archive exports, and Cloudinary media delivery.
+* **City Helpline ([Live App](https://app.imprince.me) | [GitHub](https://github.com/princeraj-in/City-Helpline))**: A hyper-local student ecosystem platform assisting students across Indian education hubs. Features verified PG and hostel directories, daily mess/tiffin service menus, quiet study library locators, an interactive monthly expense calculator with WhatsApp export, and a peer-to-peer student second-hand marketplace.
+
+### 4. 🛡️ Enterprise Security & Serverless Architecture
 * **Zero Client-Side Secret Leakage**: The Google Gemini API key (`GEMINI_API_KEY`) is strictly confined to server-side execution.
 * **Universal Deployment Parity**: Runs smoothly as an Express backend during local development (`npm run dev`) and seamlessly compiles into Vercel Serverless Functions (`/api/chat`, `/api/health`) for edge production.
 * **SPA Routing Integrity**: `vercel.json` rewrites guarantee `/chat` deep-links and refreshes never trigger 404s while strictly segregating `/api/*` endpoints.
@@ -143,6 +147,7 @@ Portfolio-prince-raj/
 │   │   │   ├── CursorGlow.tsx    # Interactive mouse tracking spotlight
 │   │   │   └── ...               # Cards, grids, and contact footers
 │   │   ├── AboutSection.tsx      # Background & philosophy
+│   │   ├── ProjectsSection.tsx   # Featured deployments (LensDrop & City Helpline)
 │   │   ├── ChatPage.tsx          # Dedicated /chat full-page interface
 │   │   ├── CredentialsSection.tsx# 7 verified certifications & IIT Patna
 │   │   ├── HeroSection.tsx       # Primary showcase banner

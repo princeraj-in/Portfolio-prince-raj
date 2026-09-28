@@ -133,7 +133,7 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
       const fallbackMessage: ChatMessage = {
         id: `bot-${Date.now()}`,
         role: 'model',
-        content: "I'm having a brief connection issue, but here is what you should know about **Prince Raj**:\n\n- 🎓 **IIT Patna**: BS in Computer Science & Data Analytics\n- 🏆 **Certifications**: 7 global accreditations from Google, IBM, and AWS\n- 📬 **Email**: [kusprince.raj@gmail.com](mailto:kusprince.raj@gmail.com)\n- 📱 **WhatsApp**: [+91 8252995548](https://wa.me/918252995548)",
+        content: "I'm having a brief connection issue, but here is what you should know about **Prince Raj**:\n\n- 🎓 **IIT Patna**: BS in Computer Science & Data Analytics\n- 🚀 **Featured Deployments**:\n  - [LensDrop (Live)](https://lensdrop.imprince.me): Event memory sharing with QR uploads\n  - [City Helpline (Live)](https://app.imprince.me): Hyper-local student ecosystem & PG directory\n- 🏆 **Certifications**: 7 global accreditations from Google, IBM, and AWS\n- 📬 **Email**: [kusprince.raj@gmail.com](mailto:kusprince.raj@gmail.com)\n- 📱 **WhatsApp**: [+91 8252995548](https://wa.me/918252995548)",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       setMessages((prev) => [...prev, fallbackMessage]);

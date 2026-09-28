@@ -10,15 +10,18 @@ import { NeuralVortexBackground } from './components/ui/NeuralVortexBackground';
 import { CursorGlow } from './components/ui/CursorGlow';
 import { HeroSection } from './components/HeroSection';
 import { AboutSection } from './components/AboutSection';
+import { ProjectsSection } from './components/ProjectsSection';
 import { SkillsSection } from './components/SkillsSection';
 import { CredentialsSection } from './components/CredentialsSection';
 import { ContactFooter } from './components/ui/contact-footer';
 import { ProfileChatbot } from './components/ui/ProfileChatbot';
 import { ChatPage } from './components/ChatPage';
 import { useNavigation } from './lib/navigation';
+import { useSmoothScroll } from './lib/smooth-scroll';
 
 export default function App() {
   const { pathname, navigate } = useNavigation();
+  useSmoothScroll();
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -36,6 +39,7 @@ export default function App() {
             <AboutSection />
             <SkillsSection />
             <CredentialsSection />
+            <ProjectsSection />
           </main>
           
           <ContactFooter />

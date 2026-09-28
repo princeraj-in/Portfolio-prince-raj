@@ -41,9 +41,9 @@ const SUGGESTION_CARDS = [
   },
   {
     icon: Rocket,
-    title: 'Projects',
-    subtitle: 'Autonomous systems & quantitative trading',
-    query: "What notable AI and quantitative trading projects has Prince built?",
+    title: 'Featured Projects',
+    subtitle: 'LensDrop & City Helpline production platforms',
+    query: "Tell me about Prince's featured projects: LensDrop and City Helpline.",
     color: 'from-emerald-500/20 to-teal-500/10 border-emerald-500/30 text-emerald-400',
   },
   {

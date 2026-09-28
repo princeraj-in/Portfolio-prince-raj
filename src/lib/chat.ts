@@ -10,7 +10,7 @@ export interface ChatMessage {
 export const QUICK_PROMPTS = [
   { label: '🎓 Education & IIT Patna', query: "Tell me about Prince's education at IIT Patna." },
   { label: '🧠 AI & Tech Stack', query: "What are Prince's primary technical skills and AI frameworks?" },
-  { label: '🚀 Projects', query: "What notable AI and quantitative trading projects has Prince built?" },
+  { label: '🚀 Projects', query: "Tell me about Prince's featured projects: LensDrop and City Helpline." },
   { label: '🏆 Certifications', query: "What certifications does Prince hold from Google, IBM, and AWS?" },
   { label: '📬 Contact & Collaboration', query: "How can I contact or collaborate with Prince Raj?" },
 ];
@@ -79,7 +79,7 @@ export function useChatbot(initialMessages: ChatMessage[] = INITIAL_MESSAGES) {
         id: `bot-${Date.now()}`,
         role: 'model',
         content:
-          "I'm having a brief connection issue, but here is what you should know about **Prince Raj**:\n\n- 🎓 **IIT Patna**: BS in Computer Science & Data Analytics\n- 🏆 **Certifications**: 7 global accreditations from Google, IBM, and AWS\n- 📬 **Email**: [kusprince.raj@gmail.com](mailto:kusprince.raj@gmail.com)\n- 📱 **WhatsApp**: [+91 8252995548](https://wa.me/918252995548)",
+          "I'm having a brief connection issue, but here is what you should know about **Prince Raj**:\n\n- 🎓 **IIT Patna**: BS in Computer Science & Data Analytics\n- 🚀 **Featured Deployments**:\n  - [LensDrop (Live)](https://lensdrop.imprince.me): Event memory sharing with QR uploads\n  - [City Helpline (Live)](https://app.imprince.me): Hyper-local student ecosystem & PG directory\n- 🏆 **Certifications**: 7 global accreditations from Google, IBM, and AWS\n- 📬 **Email**: [kusprince.raj@gmail.com](mailto:kusprince.raj@gmail.com)\n- 📱 **WhatsApp**: [+91 8252995548](https://wa.me/918252995548)",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       setMessages((prev) => [...prev, fallbackMessage]);

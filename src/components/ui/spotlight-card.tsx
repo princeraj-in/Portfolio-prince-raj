@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from 'react';
-import { motion, HTMLMotionProps } from 'motion/react';
+import { motion, HTMLMotionProps, useReducedMotion } from 'motion/react';
 
 interface SpotlightCardProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
@@ -23,34 +23,32 @@ export const SpotlightCard: React.FC<SpotlightCardProps> = ({
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
 
-    const rect = cardRef.current.getBoundingClientRect();
-    let clientX: number, clientY: number;
+    // Do not tilt on touch devices or reduced motion to ensure smooth native scrolling and zoom stability
+    if ('touches' in e || shouldReduceMotion) return;
 
-    if ('touches' in e) {
-      clientX = e.touches[0].clientX;
-      clientY = e.touches[0].clientY;
-    } else {
-      clientX = e.clientX;
-      clientY = e.clientY;
-    }
+    const rect = cardRef.current.getBoundingClientRect();
+    const clientX = e.clientX;
+    const clientY = e.clientY;
 
     const x = clientX - rect.left;
     const y = clientY - rect.top;
     setPosition({ x, y });
 
-    if (enableTilt && !('touches' in e)) {
+    if (enableTilt && !shouldReduceMotion) {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
-      const rX = ((y - centerY) / centerY) * -5;
-      const rY = ((x - centerX) / centerX) * 5;
+      // Gentle subtle tilt angles for zoom stability
+      const rX = ((y - centerY) / centerY) * -3.5;
+      const rY = ((x - centerX) / centerX) * 3.5;
       setRotateX(rX);
       setRotateY(rY);
     }
-  }, [enableTilt]);
+  }, [enableTilt, shouldReduceMotion]);
 
   const handleMouseEnter = () => {
     setOpacity(1);
@@ -74,10 +72,10 @@ export const SpotlightCard: React.FC<SpotlightCardProps> = ({
       onTouchStart={handleMouseEnter}
       onTouchEnd={handleMouseLeave}
       animate={{ 
-        rotateX: isHovered ? rotateX : 0, 
-        rotateY: isHovered ? rotateY : 0,
-        y: isHovered ? -4 : 0,
-        scale: isHovered ? 1.012 : 1,
+        rotateX: isHovered && !shouldReduceMotion ? rotateX : 0, 
+        rotateY: isHovered && !shouldReduceMotion ? rotateY : 0,
+        y: isHovered && !shouldReduceMotion ? -4 : 0,
+        scale: isHovered && !shouldReduceMotion ? 1.008 : 1,
         transformPerspective: 1200,
       }}
       transition={{ 
@@ -89,7 +87,7 @@ export const SpotlightCard: React.FC<SpotlightCardProps> = ({
       style={{
         transformStyle: "preserve-3d",
       }}
-      className={`relative overflow-hidden backdrop-blur-3xl bg-white/75 dark:bg-slate-950/65 border border-white/60 dark:border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.6)] rounded-[2.5rem] transition-all duration-300 group ${className}`}
+      className={`relative overflow-hidden backdrop-blur-3xl bg-white/75 dark:bg-slate-950/65 border border-white/60 dark:border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.6)] rounded-[2.2rem] sm:rounded-[2.5rem] transition-all duration-300 group min-w-0 w-full ${className}`}
       {...props}
     >
       {/* Liquid Organic Morphing Underglow Blob */}
@@ -100,8 +98,8 @@ export const SpotlightCard: React.FC<SpotlightCardProps> = ({
       )}
 
       {/* 3D Glass Inner Bevel & Multi-layer Specular Refraction */}
-      <div className="absolute inset-0 rounded-[2.5rem] border-[1.5px] border-white/80 dark:border-white/20 opacity-70 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-transparent to-transparent dark:from-white/15 dark:via-transparent dark:to-transparent pointer-events-none rounded-[2.5rem]" />
+      <div className="absolute inset-0 rounded-[inherit] border-[1.5px] border-white/80 dark:border-white/20 opacity-70 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-transparent to-transparent dark:from-white/15 dark:via-transparent dark:to-transparent pointer-events-none rounded-[inherit]" />
       
       {/* Interactive Liquid Specular Spotlight Tracking Mouse */}
       <div
@@ -114,7 +112,7 @@ export const SpotlightCard: React.FC<SpotlightCardProps> = ({
 
       {/* Dynamic Cursor Border Highlight Sheen */}
       <div
-        className="pointer-events-none absolute inset-0 rounded-[2.5rem] transition-opacity duration-300 z-10"
+        className="pointer-events-none absolute inset-0 rounded-[inherit] transition-opacity duration-300 z-10"
         style={{
           opacity: opacity * 0.8,
           background: `radial-gradient(350px circle at ${position.x}px ${position.y}px, rgba(255,255,255,0.4), transparent 50%)`,
@@ -130,20 +128,19 @@ export const SpotlightCard: React.FC<SpotlightCardProps> = ({
       <motion.div
         className="pointer-events-none absolute -inset-full bg-gradient-to-tr from-transparent via-white/15 dark:via-white/10 to-transparent skew-x-12 z-0"
         animate={{
-          x: isHovered ? ["120%", "-120%"] : "-120%",
+          x: isHovered && !shouldReduceMotion ? ["120%", "-120%"] : "-120%",
         }}
         transition={{
           duration: 1.4,
           ease: "easeInOut",
-          repeat: isHovered ? Infinity : 0,
+          repeat: isHovered && !shouldReduceMotion ? Infinity : 0,
           repeatDelay: 2.5,
         }}
       />
 
-      <div className="relative z-10 w-full h-full">
+      <div className="relative z-10 w-full h-full flex flex-col min-w-0">
         {children}
       </div>
     </motion.div>
   );
 };
-

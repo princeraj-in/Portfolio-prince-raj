@@ -129,40 +129,42 @@ export const AboutCard: React.FC = () => {
             <motion.div 
               variants={itemFadeUp}
               whileHover={{ scale: 1.02, x: 4 }}
-              className="relative overflow-hidden p-4.5 rounded-[1.75rem] bg-gradient-to-r from-blue-600/10 via-cyan-500/10 to-indigo-600/5 border border-cyan-500/30 dark:border-cyan-400/20 backdrop-blur-xl flex items-center gap-4 shadow-[0_4px_20px_rgba(6,182,212,0.15)] group/acad transition-all duration-300"
+              className="relative overflow-hidden p-3.5 sm:p-4.5 rounded-[1.75rem] bg-gradient-to-r from-blue-600/10 via-cyan-500/10 to-indigo-600/5 border border-cyan-500/30 dark:border-cyan-400/20 backdrop-blur-xl flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 shadow-[0_4px_20px_rgba(6,182,212,0.15)] group/acad transition-all duration-300 min-w-0"
             >
               <div className="absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent pointer-events-none" />
-              <div className="p-3 rounded-2xl bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 group-hover/acad:scale-110 group-hover/acad:shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-all duration-300">
-                <GraduationCap className="w-6 h-6" />
+              <div className="p-2.5 sm:p-3 rounded-2xl bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 group-hover/acad:scale-110 group-hover/acad:shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-all duration-300 flex-shrink-0">
+                <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-xs font-bold uppercase text-cyan-600 dark:text-cyan-400 tracking-wider">
                   Academic Pursuit
                 </p>
-                <p className="text-sm md:text-base font-extrabold text-slate-900 dark:text-white">
+                <p className="text-sm md:text-base font-extrabold text-slate-900 dark:text-white break-words">
                   BS in Computer Science & Data Analytics — IIT Patna
                 </p>
               </div>
             </motion.div>
 
             {/* 3 Core Interactive Liquid Pillars */}
-            <motion.div variants={itemFadeUp} className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
+            <motion.div variants={itemFadeUp} className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 min-w-0">
               {pillars.map((pillar) => (
                 <motion.div
                   key={pillar.title}
                   whileHover={{ y: -5, scale: 1.03 }}
-                  className="relative p-4 rounded-[1.5rem] bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl border border-white/60 dark:border-white/10 hover:border-cyan-400/40 shadow-[0_4px_15px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_12px_25px_rgba(6,182,212,0.25)] transition-all duration-300 group/pillar text-left overflow-hidden"
+                  className="relative p-4 rounded-[1.5rem] bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl border border-white/60 dark:border-white/10 hover:border-cyan-400/40 shadow-[0_4px_15px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_12px_25px_rgba(6,182,212,0.25)] transition-all duration-300 group/pillar text-left overflow-hidden min-w-0 flex flex-col justify-between"
                 >
                   <div className="absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 dark:via-white/20 to-transparent pointer-events-none" />
-                  <div className={`p-2.5 w-fit rounded-2xl bg-gradient-to-br ${pillar.color} mb-3 border border-white/20 group-hover/pillar:scale-110 group-hover/pillar:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300`}>
+                  <div className={`p-2.5 w-fit rounded-2xl bg-gradient-to-br ${pillar.color} mb-3 border border-white/20 group-hover/pillar:scale-110 group-hover/pillar:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300 flex-shrink-0`}>
                     <pillar.icon className={`w-4 h-4 ${pillar.iconColor}`} />
                   </div>
-                  <h4 className="text-xs font-bold text-slate-900 dark:text-white mb-1 tracking-tight">
-                    {pillar.title}
-                  </h4>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
-                    {pillar.desc}
-                  </p>
+                  <div className="min-w-0">
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-white mb-1 tracking-tight truncate">
+                      {pillar.title}
+                    </h4>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug break-words">
+                      {pillar.desc}
+                    </p>
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
