@@ -226,8 +226,8 @@ export const projectsData: ProjectData[] = [
     }
   },
   {
-    id: 'city-helpline',
-    name: 'City Helpline',
+    id: 'studolink',
+    name: 'Studolink',
     tagline: 'A hyper-local student ecosystem platform designed to simplify student life across major Indian education and coaching hubs.',
     category: 'Hyper-Local Student Ecosystem Platform',
     typeBadge: 'Live Production',
@@ -256,7 +256,7 @@ export const projectsData: ProjectData[] = [
       'Vercel'
     ],
     githubUrl: 'https://github.com/princeraj-in/CityHelpline',
-    liveUrl: 'https://app.imprince.me',
+    liveUrl: 'https://studolink.imprince.me',
     accentColor: '#10b981',
     accentGradient: 'from-emerald-500 via-teal-500 to-cyan-500',
     borderColor: 'border-emerald-500/30',
@@ -483,8 +483,8 @@ const LensDropVisual: React.FC = () => {
   );
 };
 
-// Zoom-Stable, Ultra-Premium City Helpline Interactive Simulator Preview
-const CityHelplineVisual: React.FC = () => {
+// Zoom-Stable, Ultra-Premium Studolink Interactive Simulator Preview
+const StudolinkVisual: React.FC = () => {
   return (
     <div className="relative w-full rounded-2xl overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950/40 border border-emerald-500/25 p-3 sm:p-4 shadow-inner min-w-0">
       {/* Background Micro Grid Glow */}
@@ -500,7 +500,7 @@ const CityHelplineVisual: React.FC = () => {
         
         <div className="flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-black/60 border border-emerald-500/30 text-[10px] text-emerald-300 font-mono tracking-tight shadow-sm min-w-0 max-w-[180px] sm:max-w-none">
           <Lock className="w-2.5 h-2.5 text-emerald-400 flex-shrink-0" />
-          <span className="font-semibold truncate">app.imprince.me</span>
+          <span className="font-semibold truncate">studolink.imprince.me</span>
         </div>
 
         <div className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 flex-shrink-0">
@@ -642,7 +642,7 @@ export const ProjectsSection: React.FC = () => {
                 {/* Top Interactive Visual Preview Window */}
                 <div className="relative mb-4 sm:mb-5 min-w-0">
                   {project.id === 'lensdrop' && <LensDropVisual />}
-                  {project.id === 'city-helpline' && <CityHelplineVisual />}
+                  {project.id === 'studolink' && <StudolinkVisual />}
                 </div>
 
                 {/* Metadata Header */}

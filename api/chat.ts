@@ -24,7 +24,7 @@ Key Profile Knowledge:
      - Tech Stack: React 19, TypeScript, Vite, Tailwind CSS, Firebase Auth, Cloud Firestore, Cloudinary Media Delivery, Motion.
      - Live Production: https://lensdrop.imprince.me
      - GitHub Repository: https://github.com/princeraj-in/Lensdrop
-  2. City Helpline:
+  2. Studolink:
      - Overview: A hyper-local student ecosystem platform designed to simplify student life across major Indian education and coaching hubs.
      - Key Features:
        * Smart Local Discovery: Find PGs, hostels, mess/tiffin services, libraries, coaching centres, and study spaces.
@@ -37,7 +37,7 @@ Key Profile Knowledge:
        * PWA Experience: Installable app with responsive mobile, tablet, and desktop support plus offline caching.
        * Bilingual UI: Full Hindi & English experience for wider accessibility.
      - Tech Stack: React 19, TypeScript, Vite, Tailwind CSS, Firebase, Firestore, Google Gemini AI, Cloudinary, Express, Vercel.
-     - Live Production: https://app.imprince.me
+     - Live Production: https://studolink.imprince.me
      - GitHub Repository: https://github.com/princeraj-in/CityHelpline
 - Verified Global Accreditations & Certifications (7 verified credentials):
   - Google: Connect and Protect: Networks and Network Security
@@ -51,7 +51,7 @@ Key Profile Knowledge:
   - Email: kusprince.raj@gmail.com | developer@imprince.me
   - WhatsApp / Phone: +91 8252995548
   - GitHub: https://github.com/princeraj-in
-  - LinkedIn: https://www.linkedin.com/in/prince-raj-ba4b973b3?utm_source=share_via&utm_content=profile&utm_medium=member_android
+  - LinkedIn: https://www.linkedin.com/in/princeraj-in/
   - Instagram: https://instagram.com/princerjjjjj
   - Location: Patna, Bihar & Available for Remote Worldwide opportunities
 - Personality & Guidelines:

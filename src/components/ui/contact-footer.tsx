@@ -429,7 +429,7 @@ export const ContactFooter: React.FC = () => {
           <div className="flex items-center gap-5 sm:gap-6">
             <SocialIcon href="mailto:kusprince.raj@gmail.com" icon={Mail} label="Email" index={0} />
             <SocialIcon href="https://github.com/princeraj-in" icon={Github} label="GitHub" index={1} />
-            <SocialIcon href="https://www.linkedin.com/in/prince-raj-ba4b973b3?utm_source=share_via&utm_content=profile&utm_medium=member_android" icon={Linkedin} label="LinkedIn" index={2} />
+            <SocialIcon href="https://www.linkedin.com/in/princeraj-in/" icon={Linkedin} label="LinkedIn" index={2} />
             <SocialIcon href="https://instagram.com/princerjjjjj" icon={Instagram} label="Instagram" index={3} />
           </div>
           
