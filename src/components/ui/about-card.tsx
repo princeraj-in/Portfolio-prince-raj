@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { BrainCircuit, Bot, TrendingUp, Layers, Sparkles, GraduationCap } from 'lucide-react';
+import { BrainCircuit, Bot, Code2, Layers, Sparkles, Zap, ShieldCheck } from 'lucide-react';
 import { SpotlightCard } from './spotlight-card';
 import { staggerContainer, itemFadeUp, itemPop } from '../../lib/animations';
 
@@ -9,21 +9,21 @@ export const AboutCard: React.FC = () => {
     {
       icon: Bot,
       title: "Agentic AI Systems",
-      desc: "Architecting autonomous agents and smart automation workflows.",
+      desc: "Architecting autonomous multi-agent pipelines and smart automation workflows.",
       color: "from-cyan-500/20 to-blue-500/10",
       iconColor: "text-cyan-400"
     },
     {
-      icon: TrendingUp,
-      title: "Quantitative Trading",
-      desc: "Developing algorithmic market systems and statistical models.",
+      icon: Code2,
+      title: "Full-Stack AI Platforms",
+      desc: "Engineering scalable React 19, TypeScript, and microservice architectures.",
       color: "from-emerald-500/20 to-teal-500/10",
       iconColor: "text-emerald-400"
     },
     {
       icon: Layers,
-      title: "Scalable Infrastructure",
-      desc: "Engineering high-throughput data pipelines and modern stacks.",
+      title: "Scalable Cloud Infra",
+      desc: "Deploying low-latency serverless APIs, vector stores, and robust pipelines.",
       color: "from-purple-500/20 to-indigo-500/10",
       iconColor: "text-purple-400"
     }
@@ -88,9 +88,9 @@ export const AboutCard: React.FC = () => {
               <motion.div 
                 animate={{ y: [4, -4, 4], x: [-2, 2, -2] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-1 -left-1 px-2.5 py-1 bg-purple-500/10 border border-purple-500/30 backdrop-blur-md rounded-full text-[10px] font-bold text-purple-600 dark:text-purple-300 shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                className="absolute -bottom-1 -left-1 px-2.5 py-1 bg-blue-500/10 border border-blue-500/30 backdrop-blur-md rounded-full text-[10px] font-bold text-blue-600 dark:text-blue-300 shadow-[0_0_10px_rgba(59,130,246,0.3)]"
               >
-                QUANT
+                AGENTS
               </motion.div>
             </div>
             
@@ -122,31 +122,31 @@ export const AboutCard: React.FC = () => {
               variants={itemFadeUp}
               className="dark:text-slate-300 text-slate-700 text-base md:text-lg leading-relaxed font-normal"
             >
-              As an AI Developer, I engineer autonomous agentic systems, bespoke machine learning models, and quantitative trading frameworks engineered for low-latency decision intelligence.
+              As an AI Developer & Full Stack Engineer, I architect autonomous agentic systems, bespoke machine learning models, and high-performance cloud applications engineered for real-world reliability and instant responsiveness.
             </motion.p>
 
-            {/* IIT Patna Academic Highlight Pill */}
+            {/* Core Philosophy Banner */}
             <motion.div 
               variants={itemFadeUp}
-              whileHover={{ scale: 1.02, x: 4 }}
-              className="relative overflow-hidden p-3.5 sm:p-4.5 rounded-[1.75rem] bg-gradient-to-r from-blue-600/10 via-cyan-500/10 to-indigo-600/5 border border-cyan-500/30 dark:border-cyan-400/20 backdrop-blur-xl flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 shadow-[0_4px_20px_rgba(6,182,212,0.15)] group/acad transition-all duration-300 min-w-0"
+              whileHover={{ scale: 1.01, x: 2 }}
+              className="relative overflow-hidden p-3.5 sm:p-4 rounded-[1.75rem] bg-gradient-to-r from-blue-600/10 via-cyan-500/10 to-indigo-600/5 border border-cyan-500/30 dark:border-cyan-400/20 backdrop-blur-xl flex items-center gap-3.5 shadow-[0_4px_20px_rgba(6,182,212,0.15)] group/acad transition-all duration-300 min-w-0"
             >
               <div className="absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent pointer-events-none" />
-              <div className="p-2.5 sm:p-3 rounded-2xl bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 group-hover/acad:scale-110 group-hover/acad:shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-all duration-300 flex-shrink-0">
-                <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6" />
+              <div className="p-2.5 rounded-2xl bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 group-hover/acad:scale-110 group-hover/acad:shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-all duration-300 flex-shrink-0">
+                <Zap className="w-5 h-5" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-bold uppercase text-cyan-600 dark:text-cyan-400 tracking-wider">
-                  Academic Pursuit
+                  Technical Mission
                 </p>
                 <p className="text-sm md:text-base font-extrabold text-slate-900 dark:text-white break-words">
-                  BS in Computer Science & Data Analytics — IIT Patna
+                  Building Autonomous Agent Architectures & Production-Ready AI Platforms
                 </p>
               </div>
             </motion.div>
 
             {/* 3 Core Interactive Liquid Pillars */}
-            <motion.div variants={itemFadeUp} className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 min-w-0">
+            <motion.div variants={itemFadeUp} className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1 min-w-0">
               {pillars.map((pillar) => (
                 <motion.div
                   key={pillar.title}
@@ -173,7 +173,7 @@ export const AboutCard: React.FC = () => {
             <motion.div variants={itemFadeUp} className="pt-2">
               <div className="relative overflow-hidden italic text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-300 drop-shadow-[0_0_15px_rgba(251,191,36,0.4)] text-base md:text-lg font-semibold border-l-4 border-amber-400/80 pl-4 py-2.5 rounded-r-2xl bg-amber-500/[0.04] backdrop-blur-md">
                 <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-amber-400/40 via-yellow-300/60 to-transparent pointer-events-none" />
-                "Merging technology and finance into a self-sustaining intelligent ecosystem."
+                "Merging intelligent computing and human ingenuity into transformative software solutions."
               </div>
             </motion.div>
           </div>

@@ -30,8 +30,8 @@ export const skillsData: SkillItem[] = [
     level: 'Expert', 
     proficiency: 96,
     experience: '3+ Years / Production',
-    tag: 'Autonomous AI & Core Quant',
-    description: 'Primary computational language for AI agent pipelines, algorithmic backtesting, and data pipelines.',
+    tag: 'Autonomous AI & Backend',
+    description: 'Primary computational language for AI agent pipelines, intelligent automation, and data pipelines.',
     icon: SiPython, 
     color: '#3776AB' 
   },
@@ -196,7 +196,7 @@ export const skillsData: SkillItem[] = [
     proficiency: 86,
     experience: 'Algorithmic Optimization',
     tag: 'Low-Latency Computing',
-    description: 'Memory management, data structures, competitive programming, and low-latency financial models.',
+    description: 'Memory management, data structures, competitive programming, and high-performance computing.',
     icon: SiCplusplus, 
     color: '#00599C' 
   },

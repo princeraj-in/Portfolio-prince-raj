@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ExternalLink, Award, Sparkles, CheckCircle2, ShieldCheck } from 'lucide-react';
-import { EducationCard } from './ui/education-card';
 import { SpotlightCard } from './ui/spotlight-card';
 import { staggerContainer, staggerGrid, itemFadeUp, itemPop } from '../lib/animations';
 
@@ -91,38 +90,25 @@ export const CredentialsSection: React.FC = () => {
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-bold text-blue-600 dark:text-blue-400 mb-4 shadow-[0_0_15px_rgba(59,130,246,0.2)]"
           >
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>ACADEMIC & PROFESSIONAL CREDENTIALS</span>
+            <span>GLOBAL PROFESSIONAL CREDENTIALS</span>
           </motion.div>
 
           <motion.h2 
             variants={itemFadeUp}
             className="text-3xl sm:text-4xl md:text-5xl font-extrabold dark:text-white text-slate-900 tracking-tight mb-4"
           >
-            Academic & <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500">Industry Credentials</span>
+            Verified <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500">Industry Credentials</span>
           </motion.h2>
           
           <motion.p
             variants={itemFadeUp}
             className="text-slate-600 dark:text-slate-400 text-sm md:text-base max-w-2xl mx-auto"
           >
-            Academic pursuit at IIT Patna alongside globally accredited professional certifications from Google, IBM, and AWS.
+            Globally accredited certifications in Artificial Intelligence, Cloud Infrastructure, and Machine Learning from Google, IBM, and AWS.
           </motion.p>
         </motion.div>
 
-        {/* 1. Education Card with Staggered Slide In */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          className="mb-14"
-        >
-          <motion.div variants={itemFadeUp}>
-            <EducationCard />
-          </motion.div>
-        </motion.div>
-
-        {/* 2. Certifications Header & Grid */}
+        {/* Certifications Header & Grid */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"

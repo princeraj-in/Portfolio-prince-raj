@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { ChevronRight, Mail, Sparkles, Award, GraduationCap, Cpu, TrendingUp, ArrowUpRight, Bot } from 'lucide-react';
+import { ChevronRight, Mail, Sparkles, Award, Zap, Cpu, Layers, ArrowUpRight, Bot } from 'lucide-react';
 import { HeroVortexCanvas } from './ui/HeroVortexCanvas';
 import { staggerContainer, itemFadeUp, itemPop } from '../lib/animations';
 
@@ -28,9 +28,9 @@ export const HeroSection: React.FC = () => {
   };
 
   const stats = [
-    { icon: GraduationCap, label: "IIT Patna", value: "BS in CS & Analytics", color: "from-blue-500 to-cyan-400" },
+    { icon: Sparkles, label: "Core Focus", value: "Autonomous AI & Agents", color: "from-blue-500 to-cyan-400" },
     { icon: Award, label: "Certifications", value: "7+ Google / IBM / AWS", color: "from-purple-500 to-pink-400" },
-    { icon: TrendingUp, label: "Quantitative Systems", value: "Trading & Algorithms", color: "from-emerald-500 to-teal-400" },
+    { icon: Zap, label: "Intelligent Systems", value: "LLMs & RAG Pipelines", color: "from-emerald-500 to-teal-400" },
     { icon: Cpu, label: "Core Stack", value: "18+ Modern AI Frameworks", color: "from-amber-500 to-orange-400" },
   ];
 
@@ -69,7 +69,7 @@ export const HeroSection: React.FC = () => {
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500" />
             </span>
             <span className="text-xs md:text-sm font-bold tracking-wider text-cyan-600 dark:text-cyan-300 uppercase">
-              AI Developer & Quantitative Trader
+              AI Developer & Full Stack Engineer
             </span>
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
           </motion.div>
@@ -117,7 +117,7 @@ export const HeroSection: React.FC = () => {
             variants={itemFadeUp} 
             className="text-sm sm:text-base md:text-lg dark:text-slate-300 text-slate-700 max-w-xl leading-relaxed drop-shadow-sm font-normal"
           >
-            Pioneering autonomous AI systems, algorithmic quantitative modeling, and scalable modern architectures to solve complex computational challenges.
+            Pioneering autonomous AI systems, intelligent agentic workflows, and scalable modern architectures to solve complex computational challenges.
           </motion.p>
           
           {/* 3D Liquid Glass CTA Buttons */}
