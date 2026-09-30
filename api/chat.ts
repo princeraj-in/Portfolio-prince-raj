@@ -1,9 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { GoogleGenAI } from '@google/genai';
 
-// Active Gemini model - configurable via environment variable, defaulting to gemini-3.6-flash
-export const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-3.6-flash';
-
 // Profile Knowledge Base for Gemini System Instruction
 export const SYSTEM_INSTRUCTION = `You are "Tectra AI", the official intelligent portfolio assistant for Prince Raj (brand: ImPrince Tectra).
 Your mission is to represent Prince Raj professionally, concisely, and accurately to recruiters, clients, collaborators, and visitors.
@@ -54,9 +51,9 @@ Key Profile Knowledge:
   - Instagram: https://instagram.com/princerjjjjj
   - Location: Patna, Bihar & Available for Remote Worldwide opportunities
 - Personality & Guidelines:
-  - Speak in a sharp, intelligent, polite, and enthusiastic tone reflecting Prince's forward-looking tech and quant mindset.
-  - When asked about hiring, projects, or collaborations, invite them to connect via email (kusprince.raj@gmail.com) or WhatsApp (+91 8252995548).
-  - Format answers neatly with markdown (bullet points, bold text) for readability. Keep answers focused and concise.`;
+  - Speak in a sharp, intelligent, polite, and enthusiastic tone reflecting Prince's forward-looking AI and full-stack systems engineering mindset.
+  - When asked about hiring, projects, or collaborations, invite them to connect via email (kusprince.raj@gmail.com), WhatsApp (+91 8252995548), or LinkedIn (https://www.linkedin.com/in/princeraj-in/).
+  - Format answers neatly with rich markdown (bullet points, bold text, links) for readability. Keep answers focused, technically authoritative, and concise.`;
 
 // Cache GoogleGenAI client per serverless instance lifecycle
 let aiClient: GoogleGenAI | null = null;
@@ -84,7 +81,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Accept only POST requests
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed. Use POST.' });
+    return res.status(405).json({
+      error: 'Method Not Allowed. Use POST.',
+      code: 'METHOD_NOT_ALLOWED',
+    });
   }
 
   try {
@@ -94,28 +94,35 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       try {
         body = JSON.parse(body);
       } catch {
-        return res.status(400).json({ error: 'Invalid JSON payload in request body.' });
+        return res.status(400).json({
+          error: 'Invalid JSON payload in request body.',
+          code: 'INVALID_JSON',
+        });
       }
     }
 
     const { message, history } = body || {};
 
-    // Validate the incoming message
+    // Validate incoming message
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
-      return res.status(400).json({ error: 'A message string is required.' });
+      return res.status(400).json({
+        error: 'A message string is required.',
+        code: 'MESSAGE_REQUIRED',
+      });
     }
 
-    // Read API key strictly from server-side environment variables
-    const apiKey = process.env.GEMINI_API_KEY;
+    // Read API key strictly from server-side environment variables (never hardcoded)
+    const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
     if (!apiKey) {
-      console.error('Server Configuration Error: GEMINI_API_KEY environment variable is not configured.');
-      return res.status(500).json({
-        error: 'AI service temporarily unavailable',
+      console.error('[Tectra AI] Server Configuration Error: GEMINI_API_KEY is not configured in server-side environment variables.');
+      return res.status(503).json({
+        error: 'AI service temporarily unavailable due to missing API key configuration.',
+        code: 'API_KEY_MISSING',
+        retryable: false,
       });
     }
 
     // Format conversation history - only allow valid roles (user, model)
-    // and limit to recent 10 messages to prevent payload bloat
     const contents: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }> = [];
 
     if (Array.isArray(history) && history.length > 0) {
@@ -142,28 +149,85 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const ai = getGenAI(apiKey);
 
-    const response = await ai.models.generateContent({
-      model: GEMINI_MODEL,
-      contents,
-      config: {
-        systemInstruction: SYSTEM_INSTRUCTION,
-        temperature: 0.7,
-      },
-    });
+    // Exact model hierarchy requested:
+    // 1. Main: Gemini 3.7 Flash
+    // 2. Fallback 1: Gemini 3.6 Flash
+    // 3. Fallback 2: Gemini 3.5 Flash Lite
+    // Plus resilient safety backups (gemini-flash-latest, gemini-2.5-flash)
+    const mainModel = process.env.GEMINI_MODEL?.trim() || 'gemini-3.7-flash';
+    const fallback1 = process.env.GEMINI_FALLBACK_1?.trim() || 'gemini-3.6-flash';
+    const fallback2 = process.env.GEMINI_FALLBACK_2?.trim() || 'gemini-3.5-flash-lite';
 
-    const replyText =
-      response.text ||
-      "I was unable to generate a response. Please reach out to Prince Raj directly at kusprince.raj@gmail.com.";
+    const modelCascade = Array.from(
+      new Set([mainModel, fallback1, fallback2, 'gemini-flash-latest', 'gemini-2.5-flash'].filter(Boolean))
+    );
 
-    return res.status(200).json({
-      reply: replyText,
-      source: 'gemini',
+    let successfulReply: string | null = null;
+    let successfulModel: string = mainModel;
+    let lastError: any = null;
+
+    // Instant shift: If a model fails for ANY reason (503 high demand, 429, etc.),
+    // immediately shift to the next fallback model without throwing or returning failure to the user!
+    for (const currentModel of modelCascade) {
+      try {
+        const config: any = {
+          systemInstruction: SYSTEM_INSTRUCTION,
+          temperature: 0.7,
+        };
+
+        // For Gemini 3.7 Flash, optimize latency by disabling extended thinking budget
+        if (currentModel.includes('3.7')) {
+          config.thinkingConfig = { thinkingBudget: 0 };
+        }
+
+        const response = await ai.models.generateContent({
+          model: currentModel,
+          contents,
+          config,
+        });
+
+        const replyText = response.text?.trim();
+        if (replyText) {
+          successfulReply = replyText;
+          successfulModel = currentModel;
+          // Immediately return response on first success!
+          break;
+        }
+      } catch (err: any) {
+        lastError = err;
+        console.warn(
+          `[Tectra AI] Model "${currentModel}" failed: ${err?.message || err}. Instantly shifting to next model in cascade...`
+        );
+        // Instant shift to next fallback model without delay
+        continue;
+      }
+    }
+
+    // Return the successful response seamlessly
+    if (successfulReply) {
+      return res.status(200).json({
+        reply: successfulReply,
+        source: 'gemini',
+        model: successfulModel,
+        fallbackUsed: successfulModel !== mainModel,
+      });
+    }
+
+    // Only if all fallback models in the chain fail
+    console.error('[Tectra AI] All models in cascade failed. Last error:', lastError?.message || lastError);
+    return res.status(503).json({
+      error: 'Tectra AI is currently experiencing high demand. Please try again in a few moments.',
+      code: 'HIGH_DEMAND_503',
+      retryable: true,
+      details: lastError?.message || 'Upstream model capacity exceeded',
     });
   } catch (error: any) {
-    // Log error internally without exposing sensitive details to client
-    console.error('Gemini API execution error:', error?.message || error);
+    console.error('[Tectra AI] Unhandled serverless execution error:', error?.message || error);
     return res.status(500).json({
-      error: 'AI service temporarily unavailable',
+      error: 'An internal server error occurred while processing your request.',
+      code: 'INTERNAL_SERVER_ERROR',
+      retryable: true,
+      details: error?.message || 'Server error',
     });
   }
 }

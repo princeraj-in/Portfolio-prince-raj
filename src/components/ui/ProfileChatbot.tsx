@@ -2,60 +2,145 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Markdown from 'react-markdown';
 import {
-  MessageSquare,
   X,
   Send,
   Sparkles,
   Bot,
   User,
   RotateCcw,
-  GraduationCap,
-  Award,
-  Cpu,
-  Mail,
-  Check,
   Copy,
+  Check,
   ExternalLink,
-  ChevronDown,
   Minimize2,
-  Maximize2
+  Maximize2,
+  Volume2,
+  VolumeX,
+  Mic,
+  MicOff,
+  Download,
+  Share2,
+  Radio,
+  Zap,
+  Globe,
+  Mail,
+  Award,
+  ChevronRight,
+  ShieldCheck,
+  MessageCircle,
 } from 'lucide-react';
-
-interface ChatMessage {
-  id: string;
-  role: 'user' | 'model';
-  content: string;
-  timestamp: string;
-}
-
-const QUICK_PROMPTS = [
-  { label: '🎓 Education & IIT Patna', query: 'Tell me about Prince\'s education at IIT Patna.' },
-  { label: '🏆 Verified Certifications', query: 'What certifications does Prince hold from Google, IBM, and AWS?' },
-  { label: '🧠 AI & Tech Stack', query: 'What are Prince\'s primary technical skills and AI frameworks?' },
-  { label: '📬 Contact & Connect', query: 'How can I contact or collaborate with Prince Raj?' },
-  { label: '💼 Project Experience', query: 'What areas does Prince specialize in as an AI Developer & Quant?' },
-];
-
-const INITIAL_MESSAGES: ChatMessage[] = [
-  {
-    id: 'welcome-1',
-    role: 'model',
-    content: "Hi there! 👋 I'm **Tectra AI**, Prince Raj's portfolio intelligence assistant.\n\nI can tell you all about his **education at IIT Patna**, **7 verified certifications**, **AI & Quantitative trading expertise**, or help you get in touch directly. What would you like to know?",
-    timestamp: 'Just now',
-  },
-];
+import {
+  useChatbot,
+  CATEGORIZED_PROMPTS,
+  ChatMessage
+} from '../../lib/chat';
 
 interface ProfileChatbotProps {
   onNavigate?: (to: string) => void;
 }
 
+// Interactive dynamic action pills based on message content
+const MessageActionChips: React.FC<{ content: string }> = ({ content }) => {
+  const actions = [];
+  const lower = content.toLowerCase();
+
+  if (lower.includes('studolink') || lower.includes('student ecosystem')) {
+    actions.push({
+      label: '🚀 Launch Studolink',
+      href: 'https://studolink.imprince.me',
+      isExternal: true,
+      color: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/25',
+    });
+  }
+
+  if (lower.includes('lensdrop') || lower.includes('qr upload')) {
+    actions.push({
+      label: '📸 Launch LensDrop',
+      href: 'https://lensdrop.imprince.me',
+      isExternal: true,
+      color: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30 hover:bg-cyan-500/25',
+    });
+  }
+
+  if (lower.includes('whatsapp') || lower.includes('8252995548') || lower.includes('phone')) {
+    actions.push({
+      label: '💬 Chat on WhatsApp',
+      href: 'https://wa.me/918252995548',
+      isExternal: true,
+      color: 'bg-green-500/15 text-green-300 border-green-500/30 hover:bg-green-500/25',
+    });
+  }
+
+  if (lower.includes('email') || lower.includes('kusprince.raj@gmail.com') || lower.includes('hire')) {
+    actions.push({
+      label: '✉️ Email Prince',
+      href: 'mailto:kusprince.raj@gmail.com',
+      isExternal: false,
+      color: 'bg-blue-500/15 text-blue-300 border-blue-500/30 hover:bg-blue-500/25',
+    });
+  }
+
+  if (lower.includes('linkedin')) {
+    actions.push({
+      label: '💼 LinkedIn Profile',
+      href: 'https://www.linkedin.com/in/princeraj-in/',
+      isExternal: true,
+      color: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30 hover:bg-indigo-500/25',
+    });
+  }
+
+  if (lower.includes('certificat') || lower.includes('google') || lower.includes('ibm') || lower.includes('aws')) {
+    actions.push({
+      label: '🏆 Credentials Section',
+      href: '#credentials',
+      isExternal: false,
+      color: 'bg-amber-500/15 text-amber-300 border-amber-500/30 hover:bg-amber-500/25',
+    });
+  }
+
+  if (actions.length === 0) return null;
+
+  return (
+    <div className="flex flex-wrap items-center gap-1.5 mt-2.5 pt-2 border-t border-white/10">
+      {actions.map((act, i) => (
+        <a
+          key={i}
+          href={act.href}
+          target={act.isExternal ? '_blank' : undefined}
+          rel={act.isExternal ? 'noopener noreferrer' : undefined}
+          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold border transition-all duration-200 cursor-pointer ${act.color}`}
+        >
+          <span>{act.label}</span>
+          {act.isExternal && <ExternalLink className="w-2.5 h-2.5" />}
+        </a>
+      ))}
+    </div>
+  );
+};
+
 export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const {
+    messages,
+    input,
+    setInput,
+    isLoading,
+    copiedId,
+    activeCategory,
+    setActiveCategory,
+    isListening,
+    toggleVoiceInput,
+    speakingMessageId,
+    toggleReadAloud,
+    soundEnabled,
+    toggleSound,
+    handleSend,
+    handleReset,
+    copyToClipboard,
+    exportConversation,
+  } = useChatbot();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -71,6 +156,7 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
     }
   }, [isOpen, isMinimized, messages, isLoading]);
 
+  // Global trigger listener for 'open-tectra-chat'
   useEffect(() => {
     const handleOpenEvent = (e: Event) => {
       const customEvent = e as CustomEvent<{ query?: string }>;
@@ -83,64 +169,7 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
 
     window.addEventListener('open-tectra-chat', handleOpenEvent);
     return () => window.removeEventListener('open-tectra-chat', handleOpenEvent);
-  }, [messages]);
-
-  const handleSend = async (messageText?: string) => {
-    const textToSend = (messageText || input).trim();
-    if (!textToSend || isLoading) return;
-
-    const userMessage: ChatMessage = {
-      id: `user-${Date.now()}`,
-      role: 'user',
-      content: textToSend,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
-
-    const newMessages = [...messages, userMessage];
-    setMessages(newMessages);
-    setInput('');
-    setIsLoading(true);
-
-    try {
-      // Send chat request to backend
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: textToSend,
-          history: newMessages.map(m => ({ role: m.role, content: m.content })),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Server returned ${response.status}`);
-      }
-
-      const data = await response.json();
-      const botReply = data.reply || "I couldn't process that response. Please try again or reach out to Prince at kusprince.raj@gmail.com.";
-
-      const botMessage: ChatMessage = {
-        id: `bot-${Date.now()}`,
-        role: 'model',
-        content: botReply,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      };
-
-      setMessages((prev) => [...prev, botMessage]);
-    } catch (err) {
-      console.error('Chat error:', err);
-      // Fallback helpful reply
-      const fallbackMessage: ChatMessage = {
-        id: `bot-${Date.now()}`,
-        role: 'model',
-        content: "I'm having a brief connection issue, but here is what you should know about **Prince Raj**:\n\n- 🎓 **IIT Patna**: BS in Computer Science & Data Analytics\n- 🚀 **Featured Deployments**:\n  - [LensDrop (Live)](https://lensdrop.imprince.me): Event memory sharing with QR uploads\n  - [City Helpline (Live)](https://app.imprince.me): Hyper-local student ecosystem & PG directory\n- 🏆 **Certifications**: 7 global accreditations from Google, IBM, and AWS\n- 📬 **Email**: [kusprince.raj@gmail.com](mailto:kusprince.raj@gmail.com)\n- 📱 **WhatsApp**: [+91 8252995548](https://wa.me/918252995548)",
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      };
-      setMessages((prev) => [...prev, fallbackMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [handleSend]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -149,97 +178,132 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
     }
   };
 
-  const handleReset = () => {
-    setMessages(INITIAL_MESSAGES);
-    setInput('');
-  };
-
-  const copyToClipboard = (text: string, id: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2000);
-  };
+  const currentCategoryObj =
+    CATEGORIZED_PROMPTS.find((c) => c.id === activeCategory) ||
+    CATEGORIZED_PROMPTS[0];
 
   return (
     <div id="profile-chatbot-root" className="fixed bottom-5 right-5 z-50 flex flex-col items-end">
-      {/* Floating Chat Launcher Button */}
+      {/* Floating High-Tech Holographic Launcher Button */}
       <AnimatePresence>
         {!isOpen && (
           <motion.div
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+            transition={{ type: 'spring', stiffness: 280, damping: 22 }}
             className="relative group"
           >
-            {/* Ambient pulsing ripple ring */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500 rounded-full blur-md opacity-75 group-hover:opacity-100 transition duration-300 animate-pulse pointer-events-none" />
+            {/* Outer Cybernetic Rotating Specular Rings */}
+            <div className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 opacity-60 blur-md group-hover:opacity-100 transition-opacity duration-500 animate-pulse pointer-events-none" />
+            
+            {/* Micro Tooltip */}
+            <div className="absolute -top-10 right-0 hidden group-hover:flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/95 border border-cyan-500/40 text-[11px] font-bold text-cyan-300 shadow-xl backdrop-blur-md whitespace-nowrap pointer-events-none">
+              <Sparkles className="w-3 h-3 text-cyan-400 animate-spin" style={{ animationDuration: '4s' }} />
+              <span>Ask Tectra AI about Prince Raj</span>
+            </div>
 
             <button
               id="chatbot-launcher-btn"
               onClick={() => setIsOpen(true)}
-              className="relative flex items-center gap-3 px-4 sm:px-5 py-3.5 rounded-full bg-slate-900/95 dark:bg-slate-900/90 text-white font-medium shadow-2xl border border-cyan-500/40 hover:border-cyan-400 backdrop-blur-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+              className="relative flex items-center gap-3 px-4 sm:px-5 py-3 rounded-full bg-slate-950/90 text-white font-medium shadow-[0_10px_35px_rgba(6,182,212,0.35)] border border-cyan-500/50 hover:border-cyan-400 backdrop-blur-2xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer overflow-hidden"
               aria-label="Open AI Profile Assistant"
             >
-              <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.6)]">
-                <Bot className="w-5 h-5 text-white animate-bounce-slow" />
-                {/* Active green status dot */}
-                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 border-2 border-slate-900 rounded-full shadow-[0_0_8px_#34d399]" />
+              {/* Internal Sweep Gradient Effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
+
+              {/* Holographic Glowing Core */}
+              <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 via-cyan-500 to-indigo-600 shadow-[0_0_20px_rgba(6,182,212,0.8)]">
+                <Bot className="w-4 h-4 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 border-2 border-slate-950 rounded-full shadow-[0_0_8px_#34d399]" />
               </div>
 
               <div className="flex flex-col text-left">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-bold tracking-wider text-cyan-300 uppercase">Tectra AI</span>
-                  <Sparkles className="w-3 h-3 text-cyan-300" />
+                  <span className="text-xs font-black tracking-wider text-cyan-300 uppercase">Tectra AI</span>
+                  <span className="px-1.5 py-0.2 rounded-full bg-cyan-500/20 text-[9px] font-extrabold text-cyan-300 border border-cyan-500/30">
+                    Gemini
+                  </span>
                 </div>
-                <span className="text-xs text-slate-300 font-normal">Ask about Prince's Profile</span>
+                <span className="text-[11px] text-slate-300 font-medium">Interactive Intelligence</span>
               </div>
             </button>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Floating Chat Modal Window */}
+      {/* Floating High-Tech Chat Window */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             id="chatbot-window"
             initial={{ opacity: 0, y: 30, scale: 0.92 }}
-            animate={{ 
-              opacity: 1, 
-              y: 0, 
+            animate={{
+              opacity: 1,
+              y: 0,
               scale: 1,
-              height: isMinimized ? 'auto' : undefined
             }}
             exit={{ opacity: 0, y: 30, scale: 0.92 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-            className={`w-[calc(100vw-2.5rem)] sm:w-[410px] md:w-[440px] rounded-2xl bg-slate-900/95 dark:bg-slate-950/95 border border-cyan-500/30 shadow-[0_20px_60px_rgba(0,0,0,0.6),0_0_30px_rgba(6,182,212,0.15)] backdrop-blur-2xl flex flex-col overflow-hidden text-slate-100 ${
-              isMinimized ? 'h-auto' : 'h-[580px] max-h-[82vh]'
-            }`}
+            transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+            className={`w-[calc(100vw-2rem)] ${
+              isExpanded
+                ? 'sm:w-[620px] md:w-[720px] h-[680px] max-h-[90vh]'
+                : 'sm:w-[420px] md:w-[460px] h-[580px] max-h-[84vh]'
+            } ${
+              isMinimized ? '!h-auto' : ''
+            } rounded-3xl bg-slate-950/95 border border-cyan-500/40 shadow-[0_25px_70px_rgba(0,0,0,0.85),0_0_40px_rgba(6,182,212,0.2)] backdrop-blur-3xl flex flex-col overflow-hidden text-slate-100 transition-all duration-300`}
           >
-            {/* Header */}
-            <div className="relative flex items-center justify-between px-4 py-3.5 border-b border-slate-800/80 bg-gradient-to-r from-slate-900 via-slate-900/90 to-blue-950/40">
-              <div className="flex items-center gap-3">
-                <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 via-cyan-500 to-indigo-600 shadow-[0_0_15px_rgba(6,182,212,0.4)]">
+            {/* Window Specular Top Edge */}
+            <div className="absolute inset-x-8 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent pointer-events-none" />
+
+            {/* Top High-Tech Header */}
+            <div className="relative flex items-center justify-between px-4 py-3 border-b border-slate-800/80 bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950/60">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="relative flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-2xl bg-gradient-to-tr from-blue-600 via-cyan-500 to-indigo-600 shadow-[0_0_20px_rgba(6,182,212,0.5)]">
                   <Bot className="w-5 h-5 text-white" />
-                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 border-2 border-slate-900 rounded-full" />
+                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 border-2 border-slate-950 rounded-full shadow-[0_0_8px_#34d399]" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-bold text-white tracking-wide">Tectra AI</h3>
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                      Portfolio Guide
+                    <h3 className="text-sm font-black text-white tracking-wide truncate">Tectra AI</h3>
+                    <span className="flex-shrink-0 text-[9px] font-black px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 uppercase tracking-wider">
+                      Gemini 3.6
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-400 flex items-center gap-1.5">
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    Prince Raj's Intelligent Assistant
+                  <p className="text-[10px] text-slate-400 flex items-center gap-1.5 truncate">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
+                    <span className="truncate">Prince Raj's Autonomous Profile Assistant</span>
                   </p>
                 </div>
               </div>
 
-              {/* Window Controls */}
-              <div className="flex items-center gap-1">
+              {/* Header Action Tools */}
+              <div className="flex items-center gap-1 flex-shrink-0">
+                {/* Sound FX Toggle */}
+                <button
+                  id="chatbot-sound-toggle-btn"
+                  onClick={toggleSound}
+                  title={soundEnabled ? 'Mute Sound FX' : 'Enable Sound FX'}
+                  className={`p-1.5 rounded-xl border transition-all cursor-pointer ${
+                    soundEnabled
+                      ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/20'
+                      : 'bg-slate-800/60 border-slate-700/60 text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                </button>
+
+                {/* Export Markdown Transcript */}
+                <button
+                  id="chatbot-export-btn"
+                  onClick={exportConversation}
+                  title="Export chat transcript (.md)"
+                  className="p-1.5 text-slate-400 hover:text-cyan-300 hover:bg-slate-800/60 border border-transparent hover:border-slate-700/60 rounded-xl transition-all cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                </button>
+
+                {/* Full-Page Mode */}
                 <button
                   id="chatbot-fullpage-btn"
                   onClick={() => {
@@ -251,99 +315,152 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
                       window.dispatchEvent(new PopStateEvent('popstate'));
                     }
                   }}
-                  title="Open full page chat"
-                  className="p-1.5 text-slate-400 hover:text-cyan-300 hover:bg-slate-800/60 rounded-lg transition-colors cursor-pointer"
+                  title="Switch to Full-Page Studio"
+                  className="p-1.5 text-slate-400 hover:text-cyan-300 hover:bg-slate-800/60 border border-transparent hover:border-slate-700/60 rounded-xl transition-all cursor-pointer hidden sm:block"
                 >
-                  <ExternalLink className="w-4 h-4" />
+                  <ExternalLink className="w-3.5 h-3.5" />
                 </button>
+
+                {/* Expand Width Toggle */}
+                <button
+                  id="chatbot-expand-toggle-btn"
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  title={isExpanded ? 'Normal Window' : 'Widescreen Window'}
+                  className="p-1.5 text-slate-400 hover:text-cyan-300 hover:bg-slate-800/60 border border-transparent hover:border-slate-700/60 rounded-xl transition-all cursor-pointer hidden sm:block"
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                </button>
+
+                {/* Reset Conversation */}
                 <button
                   id="chatbot-reset-btn"
                   onClick={handleReset}
                   title="Clear conversation"
-                  className="p-1.5 text-slate-400 hover:text-cyan-300 hover:bg-slate-800/60 rounded-lg transition-colors cursor-pointer"
+                  className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-800/60 border border-transparent hover:border-slate-700/60 rounded-xl transition-all cursor-pointer"
                 >
-                  <RotateCcw className="w-4 h-4" />
+                  <RotateCcw className="w-3.5 h-3.5" />
                 </button>
+
+                {/* Minimize Toggle */}
                 <button
                   id="chatbot-minimize-btn"
                   onClick={() => setIsMinimized(!isMinimized)}
-                  title={isMinimized ? "Expand" : "Minimize"}
-                  className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-lg transition-colors cursor-pointer"
+                  title={isMinimized ? 'Expand' : 'Minimize'}
+                  className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent hover:border-slate-700/60 rounded-xl transition-all cursor-pointer"
                 >
-                  {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
+                  <Minimize2 className="w-3.5 h-3.5" />
                 </button>
+
+                {/* Close Button */}
                 <button
                   id="chatbot-close-btn"
                   onClick={() => setIsOpen(false)}
                   title="Close Assistant"
-                  className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-800/60 rounded-lg transition-colors cursor-pointer"
+                  className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-800/60 border border-transparent hover:border-slate-700/60 rounded-xl transition-all cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
-            {/* Body (Collapsible if minimized) */}
+            {/* Window Content Body */}
             {!isMinimized && (
               <>
-                {/* Messages Container */}
+                {/* Chat Messages Log */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-3.5 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
                   {messages.map((msg) => {
                     const isUser = msg.role === 'user';
+                    const isSpeakingThis = speakingMessageId === msg.id;
+
                     return (
                       <motion.div
                         key={msg.id}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.25 }}
                         className={`flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'}`}
                       >
                         {/* Bot Avatar */}
                         {!isUser && (
-                          <div className="flex-shrink-0 w-7 h-7 rounded-lg bg-gradient-to-tr from-cyan-600 to-blue-600 flex items-center justify-center text-white shadow-sm mt-0.5">
+                          <div className="flex-shrink-0 w-7 h-7 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-600 flex items-center justify-center text-white shadow-md mt-0.5 border border-cyan-400/30">
                             <Bot className="w-4 h-4" />
                           </div>
                         )}
 
                         {/* Message Bubble */}
                         <div
-                          className={`relative group max-w-[85%] rounded-2xl px-3.5 py-2.5 text-xs sm:text-[13px] leading-relaxed ${
+                          className={`relative group max-w-[88%] rounded-2xl px-4 py-3 text-xs sm:text-[13px] leading-relaxed ${
                             isUser
-                              ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-tr-sm shadow-[0_4px_15px_rgba(6,182,212,0.25)]'
-                              : 'bg-slate-800/80 border border-slate-700/60 text-slate-200 rounded-tl-sm shadow-sm'
+                              ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-tr-sm shadow-[0_4px_18px_rgba(6,182,212,0.3)]'
+                              : 'bg-slate-900/90 border border-slate-800 text-slate-200 rounded-tl-sm shadow-md'
                           }`}
                         >
-                          <div className="markdown-body prose prose-invert max-w-none text-slate-200 prose-p:my-1 prose-ul:my-1 prose-li:my-0.5 prose-strong:text-cyan-300 prose-a:text-cyan-400 hover:prose-a:underline">
+                          <div className="markdown-body prose prose-invert max-w-none text-slate-200 prose-p:my-1.5 prose-ul:my-1 prose-li:my-0.5 prose-strong:text-cyan-300 prose-a:text-cyan-400 hover:prose-a:underline">
                             <Markdown>{msg.content}</Markdown>
                           </div>
 
-                          <div className="flex items-center justify-between gap-3 mt-1.5 pt-1 border-t border-white/10 text-[10px] text-slate-400">
+                          {/* 1-Click Retry Button if Temporary Failure */}
+                          {msg.isError && msg.failedPrompt && (
+                            <div className="mt-2.5 pt-2 border-t border-rose-500/30 flex items-center justify-between gap-2">
+                              <button
+                                onClick={() => handleSend(msg.failedPrompt)}
+                                disabled={isLoading}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-rose-500/20 via-amber-500/20 to-rose-500/20 hover:from-rose-500/30 hover:to-amber-500/30 border border-rose-500/40 text-xs font-bold text-rose-300 hover:text-white transition-all cursor-pointer shadow-sm hover:shadow-[0_0_15px_rgba(244,63,94,0.3)] disabled:opacity-50"
+                              >
+                                <RotateCcw className="w-3.5 h-3.5" />
+                                <span>Retry Message</span>
+                              </button>
+                              <span className="text-[10px] text-rose-400/80 font-mono">Temporary high demand</span>
+                            </div>
+                          )}
+
+                          {/* Dynamic Action Chips if mentioned in Bot content */}
+                          {!isUser && !msg.isError && <MessageActionChips content={msg.content} />}
+
+                          {/* Message Metadata & Control Bar */}
+                          <div className="flex items-center justify-between gap-3 mt-2 pt-1.5 border-t border-white/10 text-[10px] text-slate-400">
                             <span>{msg.timestamp}</span>
 
                             {!isUser && (
-                              <button
-                                onClick={() => copyToClipboard(msg.content, msg.id)}
-                                className="flex items-center gap-1 hover:text-cyan-300 transition-colors opacity-70 group-hover:opacity-100 cursor-pointer"
-                                title="Copy answer"
-                              >
-                                {copiedId === msg.id ? (
-                                  <>
-                                    <Check className="w-3 h-3 text-emerald-400" />
-                                    <span className="text-emerald-400">Copied</span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <Copy className="w-3 h-3" />
-                                    <span>Copy</span>
-                                  </>
-                                )}
-                              </button>
+                              <div className="flex items-center gap-2">
+                                {/* Read Aloud Toggle */}
+                                <button
+                                  onClick={() => toggleReadAloud(msg.id, msg.content)}
+                                  className={`flex items-center gap-1 transition-colors cursor-pointer ${
+                                    isSpeakingThis ? 'text-cyan-300 animate-pulse' : 'hover:text-cyan-300 opacity-70 group-hover:opacity-100'
+                                  }`}
+                                  title={isSpeakingThis ? 'Stop speaking' : 'Read aloud with AI voice'}
+                                >
+                                  <Volume2 className="w-3 h-3" />
+                                  <span className="hidden sm:inline">{isSpeakingThis ? 'Speaking...' : 'Listen'}</span>
+                                </button>
+
+                                {/* Copy Content Button */}
+                                <button
+                                  onClick={() => copyToClipboard(msg.content, msg.id)}
+                                  className="flex items-center gap-1 hover:text-cyan-300 transition-colors opacity-70 group-hover:opacity-100 cursor-pointer"
+                                  title="Copy response"
+                                >
+                                  {copiedId === msg.id ? (
+                                    <>
+                                      <Check className="w-3 h-3 text-emerald-400" />
+                                      <span className="text-emerald-400">Copied</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Copy className="w-3 h-3" />
+                                      <span>Copy</span>
+                                    </>
+                                  )}
+                                </button>
+                              </div>
                             )}
                           </div>
                         </div>
 
                         {/* User Avatar */}
                         {isUser && (
-                          <div className="flex-shrink-0 w-7 h-7 rounded-lg bg-slate-700 flex items-center justify-center text-slate-300 mt-0.5">
+                          <div className="flex-shrink-0 w-7 h-7 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 mt-0.5">
                             <User className="w-4 h-4" />
                           </div>
                         )}
@@ -351,21 +468,27 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
                     );
                   })}
 
-                  {/* Thinking / Loading Indicator */}
+                  {/* Thinking / Neural Processing State */}
                   {isLoading && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       className="flex gap-2.5 justify-start"
                     >
-                      <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-cyan-600 to-blue-600 flex items-center justify-center text-white shadow-sm mt-0.5">
+                      <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-600 flex items-center justify-center text-white shadow-md mt-0.5">
                         <Bot className="w-4 h-4" />
                       </div>
-                      <div className="px-4 py-3 rounded-2xl rounded-tl-sm bg-slate-800/80 border border-slate-700/60 flex items-center gap-1.5 shadow-sm">
+                      <div className="px-4 py-3 rounded-2xl rounded-tl-sm bg-slate-900/90 border border-cyan-500/30 flex items-center gap-2 shadow-lg">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
+                        </span>
                         <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: '0ms' }} />
                         <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: '150ms' }} />
                         <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: '300ms' }} />
-                        <span className="text-[11px] text-slate-400 ml-2">Consulting profile knowledge...</span>
+                        <span className="text-[11px] text-cyan-300 ml-1 font-mono font-medium">
+                          Synthesizing knowledge...
+                        </span>
                       </div>
                     </motion.div>
                   )}
@@ -373,26 +496,60 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
                   <div ref={messagesEndRef} />
                 </div>
 
-                {/* Quick Suggestion Pills */}
-                <div className="px-3 py-2 border-t border-slate-800/60 bg-slate-900/60">
-                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
-                    {QUICK_PROMPTS.map((prompt, idx) => (
+                {/* Categorized Smart Prompts Strip */}
+                <div className="px-3.5 py-2 border-t border-slate-800/80 bg-slate-950/70">
+                  {/* Category Filter Tabs */}
+                  <div className="flex items-center gap-1 mb-1.5 overflow-x-auto no-scrollbar pb-0.5">
+                    {CATEGORIZED_PROMPTS.map((cat) => (
+                      <button
+                        key={cat.id}
+                        onClick={() => setActiveCategory(cat.id)}
+                        className={`whitespace-nowrap px-2 py-0.5 rounded-full text-[10px] font-bold transition-all cursor-pointer ${
+                          activeCategory === cat.id
+                            ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_10px_rgba(6,182,212,0.3)]'
+                            : 'bg-slate-900/60 text-slate-400 hover:text-slate-200 border border-transparent'
+                        }`}
+                      >
+                        {cat.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Prompts list in active category */}
+                  <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 text-xs">
+                    {currentCategoryObj.prompts.map((prompt, idx) => (
                       <button
                         key={idx}
                         id={`chat-prompt-pill-${idx}`}
                         onClick={() => handleSend(prompt.query)}
                         disabled={isLoading}
-                        className="whitespace-nowrap px-2.5 py-1 rounded-full bg-slate-800/90 hover:bg-slate-700/80 border border-slate-700/60 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-300 text-[11px] transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="whitespace-nowrap flex items-center gap-1 px-3 py-1 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 hover:border-cyan-500/50 text-slate-300 hover:text-cyan-300 text-[11px] font-medium transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                       >
-                        {prompt.label}
+                        <Zap className="w-2.5 h-2.5 text-cyan-400" />
+                        <span>{prompt.label}</span>
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* Input Form */}
-                <div className="p-3 border-t border-slate-800/80 bg-slate-900/90">
+                {/* Input Terminal & Controls */}
+                <div className="p-3 border-t border-slate-800/80 bg-slate-950/90">
                   <div className="relative flex items-center gap-2">
+                    {/* Voice Input Microphone Button */}
+                    <button
+                      id="chatbot-voice-btn"
+                      onClick={toggleVoiceInput}
+                      title={isListening ? 'Stop listening' : 'Speak into microphone'}
+                      className={`flex-shrink-0 p-2.5 rounded-xl border transition-all cursor-pointer ${
+                        isListening
+                          ? 'bg-rose-500/20 border-rose-500/50 text-rose-300 animate-pulse shadow-[0_0_15px_rgba(244,63,94,0.5)]'
+                          : 'bg-slate-900 border-slate-700/70 text-slate-400 hover:text-cyan-300 hover:border-cyan-400/50'
+                      }`}
+                    >
+                      {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                    </button>
+
+                    {/* Input Field */}
                     <input
                       ref={inputRef}
                       id="chatbot-input"
@@ -400,28 +557,30 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={handleKeyDown}
-                      placeholder="Ask anything about Prince Raj..."
+                      placeholder={isListening ? 'Listening to voice...' : 'Ask Tectra AI anything about Prince Raj...'}
                       disabled={isLoading}
-                      className="w-full bg-slate-950/80 border border-slate-700/70 focus:border-cyan-400 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-cyan-400/50 transition-all"
+                      className="w-full bg-slate-900/90 border border-slate-700/80 focus:border-cyan-400 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-cyan-400/50 transition-all shadow-inner"
                     />
 
+                    {/* Send Message Button */}
                     <button
                       id="chatbot-send-btn"
                       onClick={() => handleSend()}
                       disabled={!input.trim() || isLoading}
-                      className="flex-shrink-0 p-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white disabled:opacity-40 disabled:hover:from-blue-600 disabled:hover:to-cyan-500 shadow-md hover:shadow-cyan-500/25 transition-all cursor-pointer disabled:cursor-not-allowed"
-                      title="Send message"
+                      className="flex-shrink-0 p-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600 hover:from-blue-500 hover:to-cyan-400 text-white disabled:opacity-40 shadow-md hover:shadow-cyan-500/30 transition-all cursor-pointer disabled:cursor-not-allowed"
+                      title="Send prompt"
                     >
                       <Send className="w-4 h-4" />
                     </button>
                   </div>
 
-                  <div className="flex items-center justify-between mt-2 px-1 text-[10px] text-slate-500">
-                    <span className="flex items-center gap-1">
+                  {/* Bottom System Telemetry */}
+                  <div className="flex items-center justify-between mt-2 px-1 text-[10px] text-slate-500 font-mono">
+                    <span className="flex items-center gap-1 text-cyan-400/80">
                       <Sparkles className="w-2.5 h-2.5 text-cyan-400" />
-                      Powered by Gemini 3.6 & Profile Knowledge Base
+                      Gemini 3.6 Flash • Low Latency
                     </span>
-                    <span>IIT Patna • ImPrince Tectra</span>
+                    <span>ImPrince Tectra • Portfolio AI</span>
                   </div>
                 </div>
               </>
