@@ -1,7 +1,7 @@
-import React, { useCallback, useMemo } from 'react';
-import Particles from 'react-tsparticles';
-import type { Engine, Container, ISourceOptions } from 'tsparticles-engine';
-import { loadSlim } from 'tsparticles-slim';
+import React, { useMemo } from 'react';
+import { Particles, ParticlesProvider } from '@tsparticles/react';
+import type { ISourceOptions } from '@tsparticles/engine';
+import { loadSlim } from '@tsparticles/slim';
 
 export interface FuturisticParticlesBackgroundProps {
   className?: string;
@@ -10,14 +10,6 @@ export interface FuturisticParticlesBackgroundProps {
 export const FuturisticParticlesBackground: React.FC<FuturisticParticlesBackgroundProps> = ({
   className = '',
 }) => {
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
-  }, []);
-
-  const particlesLoaded = useCallback(async (container?: Container) => {
-    // Container ready callback
-  }, []);
-
   const options: ISourceOptions = useMemo(
     () => ({
       fullScreen: {
@@ -139,13 +131,13 @@ export const FuturisticParticlesBackground: React.FC<FuturisticParticlesBackgrou
       <div className="absolute inset-0 bg-slate-950/70 pointer-events-none" />
 
       {/* Interactive tsParticles Canvas */}
-      <Particles
-        id="dark-futuristic-tsparticles"
-        init={particlesInit}
-        loaded={particlesLoaded}
-        options={options}
-        className="w-full h-full"
-      />
+      <ParticlesProvider init={loadSlim}>
+        <Particles
+          id="dark-futuristic-tsparticles"
+          options={options}
+          className="w-full h-full"
+        />
+      </ParticlesProvider>
     </div>
   );
 };
