@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Sparkles, Cpu } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { SkillsGrid } from './ui/skills-grid';
 import { staggerContainer, itemFadeUp, itemPop } from '../lib/animations';
 
@@ -19,7 +19,7 @@ export const SkillsSection: React.FC = () => {
         >
           <motion.div 
             variants={itemPop}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-4 shadow-[0_0_15px_rgba(6,182,212,0.2)]"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-bold text-cyan-400 mb-4 shadow-[0_0_15px_rgba(6,182,212,0.2)]"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>CORE ARSENAL & FRAMEWORKS</span>
@@ -27,14 +27,14 @@ export const SkillsSection: React.FC = () => {
 
           <motion.h2 
             variants={itemFadeUp}
-            className="text-3xl sm:text-4xl md:text-5xl font-extrabold dark:text-white text-slate-900 tracking-tight mb-4"
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4"
           >
             Technological <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500">Arsenal</span>
           </motion.h2>
 
           <motion.p
             variants={itemFadeUp}
-            className="text-slate-600 dark:text-slate-400 text-sm md:text-base max-w-xl mx-auto"
+            className="text-slate-400 text-sm md:text-base max-w-xl mx-auto"
           >
             Interactive suite of industry-standard toolchains, deep learning libraries, and high-performance computing platforms.
           </motion.p>

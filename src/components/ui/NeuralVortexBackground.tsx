@@ -41,7 +41,7 @@ export const NeuralVortexBackground: React.FC = () => {
     }
 
     const particles: Particle[] = [];
-    const count = Math.min(Math.floor((width * height) / 9000), 160);
+    const count = Math.min(Math.floor((width * height) / 9000), 140);
 
     for (let i = 0; i < count; i++) {
       const z = Math.random() * 1.2 + 0.3;
@@ -69,7 +69,7 @@ export const NeuralVortexBackground: React.FC = () => {
       ctx.clearRect(0, 0, width, height);
 
       // Draw subtle glowing ambient gradients in corners
-      const isDark = document.documentElement.classList.contains('dark');
+      const isDark = document.documentElement.classList.contains('dark') || true;
       
       const grad1 = ctx.createRadialGradient(
         width * 0.2,
@@ -79,7 +79,7 @@ export const NeuralVortexBackground: React.FC = () => {
         height * 0.2,
         width * 0.45
       );
-      grad1.addColorStop(0, isDark ? 'rgba(59, 130, 246, 0.08)' : 'rgba(59, 130, 246, 0.04)');
+      grad1.addColorStop(0, isDark ? 'rgba(59, 130, 246, 0.09)' : 'rgba(59, 130, 246, 0.04)');
       grad1.addColorStop(1, 'transparent');
       ctx.fillStyle = grad1;
       ctx.fillRect(0, 0, width, height);
@@ -92,7 +92,7 @@ export const NeuralVortexBackground: React.FC = () => {
         height * 0.7,
         width * 0.4
       );
-      grad2.addColorStop(0, isDark ? 'rgba(6, 182, 212, 0.07)' : 'rgba(6, 182, 212, 0.03)');
+      grad2.addColorStop(0, isDark ? 'rgba(6, 182, 212, 0.08)' : 'rgba(6, 182, 212, 0.03)');
       grad2.addColorStop(1, 'transparent');
       ctx.fillStyle = grad2;
       ctx.fillRect(0, 0, width, height);
@@ -156,7 +156,7 @@ export const NeuralVortexBackground: React.FC = () => {
 
           if (distSq < maxDist * maxDist) {
             const dist = Math.sqrt(distSq);
-            const lineAlpha = (1 - dist / maxDist) * 0.25 * ((p1.z + p2.z) / 2);
+            const lineAlpha = (1 - dist / maxDist) * 0.22 * ((p1.z + p2.z) / 2);
 
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
@@ -203,19 +203,19 @@ export const NeuralVortexBackground: React.FC = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
+      cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('scroll', handleScroll);
-      cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-0 pointer-events-none transition-opacity duration-500"
+      className="fixed inset-0 pointer-events-none z-0 opacity-85 transition-opacity duration-700"
+      aria-hidden="true"
     />
   );
 };
-

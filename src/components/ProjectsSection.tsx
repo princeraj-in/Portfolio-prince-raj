@@ -582,7 +582,7 @@ export const ProjectsSection: React.FC = () => {
 
       <div className="container px-4 sm:px-6 mx-auto max-w-6xl relative z-10 min-w-0">
         
-        {/* Section Header */}
+        {/* Staggered Section Header */}
         <motion.div 
           variants={staggerContainer}
           initial="hidden"
@@ -592,7 +592,7 @@ export const ProjectsSection: React.FC = () => {
         >
           <motion.div 
             variants={itemPop}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-xs font-black uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-3 sm:mb-4 shadow-[0_0_25px_rgba(6,182,212,0.2)]"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-xs font-black uppercase tracking-wider text-cyan-400 mb-3 sm:mb-4 shadow-[0_0_25px_rgba(6,182,212,0.2)]"
           >
             <FolderGit2 className="w-3.5 h-3.5 flex-shrink-0 text-cyan-400" />
             <span>FEATURED PRODUCTION PLATFORMS</span>
@@ -600,14 +600,14 @@ export const ProjectsSection: React.FC = () => {
 
           <motion.h2 
             variants={itemFadeUp}
-            className="text-3xl sm:text-4xl md:text-5xl font-black dark:text-white text-slate-900 tracking-tight mb-3 sm:mb-4 break-words"
+            className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight mb-3 sm:mb-4 break-words"
           >
             Engineered <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-emerald-400">Deployments</span>
           </motion.h2>
 
           <motion.p
             variants={itemFadeUp}
-            className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm md:text-base max-w-2xl mx-auto px-2 leading-relaxed font-medium break-words"
+            className="text-slate-400 text-xs sm:text-sm md:text-base max-w-2xl mx-auto px-2 leading-relaxed font-medium break-words"
           >
             High-impact, production-grade cloud architectures built for real-world reliability, instant user onboarding, and sub-second performance.
           </motion.p>
@@ -619,7 +619,7 @@ export const ProjectsSection: React.FC = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-40px" }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-8 items-stretch min-w-0"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch min-w-0"
         >
           {projectsData.map((project) => (
             <motion.div 
@@ -630,12 +630,12 @@ export const ProjectsSection: React.FC = () => {
               className="h-full flex flex-col min-w-0 w-full"
             >
               <SpotlightCard
-                className={`relative group h-full rounded-3xl sm:rounded-[2.4rem] overflow-hidden flex flex-col p-5 sm:p-7 md:p-8 bg-white/85 dark:bg-slate-950/85 border border-black/10 dark:border-white/15 shadow-[0_15px_45px_rgba(0,0,0,0.07)] dark:shadow-[0_25px_70px_rgba(0,0,0,0.65)] backdrop-blur-3xl transition-all duration-500 hover:border-cyan-400/50 dark:hover:border-cyan-400/50 min-w-0`}
+                className="relative group h-full rounded-3xl sm:rounded-[2.4rem] overflow-hidden flex flex-col p-5 sm:p-7 md:p-8 bg-slate-950/85 border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.65)] backdrop-blur-3xl transition-all duration-500 hover:border-cyan-400/50 min-w-0"
                 spotlightColor={project.spotlightColor}
               >
                 {/* Luminous Ambient Glow */}
                 <div 
-                  className={`absolute -inset-1 bg-gradient-to-r ${project.accentGradient} rounded-3xl sm:rounded-[2.4rem] blur-2xl opacity-10 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none`} 
+                  className={`absolute -inset-1 bg-gradient-to-r ${project.accentGradient} rounded-3xl sm:rounded-[2.4rem] blur-2xl opacity-15 group-hover:opacity-35 transition-opacity duration-700 pointer-events-none`} 
                 />
                 <div className="absolute inset-x-8 top-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent pointer-events-none" />
 
@@ -643,6 +643,53 @@ export const ProjectsSection: React.FC = () => {
                 <div className="relative mb-4 sm:mb-5 min-w-0">
                   {project.id === 'lensdrop' && <LensDropVisual />}
                   {project.id === 'studolink' && <StudolinkVisual />}
+                </div>
+
+                {/* System Type & Status Header */}
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-3 min-w-0 font-mono text-xs">
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold">SYSTEM TYPE:</span>
+                    <span className="text-cyan-300 font-bold truncate">
+                      {project.id === 'lensdrop' ? 'REAL-TIME MEDIA PLATFORM' : 'STUDENT ECOSYSTEM'}
+                    </span>
+                  </div>
+
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-emerald-950/60 border border-emerald-500/30 text-[10px] font-bold text-emerald-400 font-mono shrink-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    <span>DEPLOYED</span>
+                  </span>
+                </div>
+
+                {/* Architecture Pipeline Flow Diagram */}
+                <div className="mb-4 p-2.5 rounded bg-black/50 border border-white/[0.06] font-mono text-[10px] text-zinc-400">
+                  <span className="text-zinc-500 block mb-1 text-[9px] font-bold uppercase tracking-wider">PIPELINE ARCHITECTURE:</span>
+                  <div className="flex flex-wrap items-center gap-1.5 text-zinc-300">
+                    {project.id === 'lensdrop' ? (
+                      <>
+                        <span className="px-1.5 py-0.5 rounded bg-white/[0.04] text-cyan-300 border border-white/10">UPLOAD</span>
+                        <span className="text-zinc-600">→</span>
+                        <span className="px-1.5 py-0.5 rounded bg-white/[0.04] text-zinc-300 border border-white/10">PROCESS</span>
+                        <span className="text-zinc-600">→</span>
+                        <span className="px-1.5 py-0.5 rounded bg-white/[0.04] text-zinc-300 border border-white/10">STORAGE</span>
+                        <span className="text-zinc-600">→</span>
+                        <span className="px-1.5 py-0.5 rounded bg-white/[0.04] text-cyan-300 border border-white/10">QR DELIVERY</span>
+                        <span className="text-zinc-600">→</span>
+                        <span className="px-1.5 py-0.5 rounded bg-white/[0.04] text-emerald-300 border border-white/10">REAL-TIME ACCESS</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="px-1.5 py-0.5 rounded bg-white/[0.04] text-emerald-300 border border-white/10">DISCOVERY</span>
+                        <span className="text-zinc-600">→</span>
+                        <span className="px-1.5 py-0.5 rounded bg-white/[0.04] text-cyan-300 border border-white/10">AI ASSISTANT</span>
+                        <span className="text-zinc-600">→</span>
+                        <span className="px-1.5 py-0.5 rounded bg-white/[0.04] text-zinc-300 border border-white/10">MESSAGING</span>
+                        <span className="text-zinc-600">→</span>
+                        <span className="px-1.5 py-0.5 rounded bg-white/[0.04] text-zinc-300 border border-white/10">MARKETPLACE</span>
+                        <span className="text-zinc-600">→</span>
+                        <span className="px-1.5 py-0.5 rounded bg-white/[0.04] text-teal-300 border border-white/10">PWA CACHE</span>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 {/* Metadata Header */}

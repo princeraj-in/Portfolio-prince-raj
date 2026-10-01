@@ -6,7 +6,7 @@
 import React from 'react';
 import { ThemeProvider } from './components/ThemeProvider';
 import { Navbar } from './components/Navbar';
-import { NeuralVortexBackground } from './components/ui/NeuralVortexBackground';
+import { FuturisticParticlesBackground } from './components/ui/FuturisticParticlesBackground';
 import { CursorGlow } from './components/ui/CursorGlow';
 import { HeroSection } from './components/HeroSection';
 import { AboutSection } from './components/AboutSection';
@@ -30,7 +30,7 @@ export default function App() {
       ) : (
         <div className="min-h-screen bg-background text-foreground selection:bg-blue-500/30 font-sans overflow-x-hidden transition-colors duration-300">
           <CursorGlow />
-          <NeuralVortexBackground />
+          <FuturisticParticlesBackground />
           
           <Navbar />
           
