@@ -288,7 +288,7 @@ export const projectsData: ProjectData[] = [
       }
     ],
     detail: {
-      problem: 'Moving to major Indian education and coaching hubs (like Kota, Patna, Delhi, Pune) leaves students vulnerable to predatory broker markups, unverified PGs, unhygienic tiffin services, chaotic roommate situations, and a lack of trusted local guidance.',
+      problem: 'Moving to major Indian education and coaching hubs (like Kota, Delhi, Bengaluru, Pune) leaves students vulnerable to predatory broker markups, unverified PGs, unhygienic tiffin services, chaotic roommate situations, and a lack of trusted local guidance.',
       solution: 'City Helpline consolidates every essential student living vertical into an intuitive, zero-commission platform: smart local discovery for PGs and mess plans, AI Mitra (powered by Google Gemini) for local guidance and safety advice, real-time messaging, roommate matching, peer marketplace, and budget intelligence in Hindi & English.',
       architectureOverview: 'Architected as a progressive web application (PWA) with a React 19 frontend and an Express proxy backend deployed on Vercel. Features Cloud Firestore for real-time messaging and instant listings queries, Google Gemini AI for contextual AI Mitra assistance, Cloudinary for student asset delivery, and bilingual state synchronization.',
       architectureSteps: [
@@ -379,7 +379,7 @@ export const projectsData: ProjectData[] = [
         }
       ],
       realWorldUseCases: [
-        'Coaching students in Kota, Patna, Delhi relocating for JEE/NEET/UPSC exams',
+        'Coaching students in Kota, Delhi, Bengaluru relocating for JEE/NEET/UPSC exams',
         'Freshmen searching for verified PGs and hygienic 3x daily tiffin meal plans',
         'Students seeking compatible roommates with matching study schedules',
         'Seniors selling used reference books, study tables, and cycles to incoming batches'

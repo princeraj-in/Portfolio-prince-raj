@@ -209,7 +209,7 @@ const LiquidLetsConnectCard = ({ onToast }: { onToast: (msg: string) => void }) 
           <ContactChannelRow 
             icon={MapPin} 
             label="Base Location" 
-            value="Patna & Across India" 
+            value="India (Available Remotely)" 
             canCopy={false}
           />
           <ContactChannelRow 

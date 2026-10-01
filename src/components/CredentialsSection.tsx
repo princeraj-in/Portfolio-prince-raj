@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ExternalLink, Award, Sparkles, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { SpotlightCard } from './ui/spotlight-card';
-import { EducationCard } from './ui/education-card';
 import { staggerContainer, staggerGrid, itemFadeUp, itemPop } from '../lib/animations';
 
 interface Credential {
@@ -107,18 +106,6 @@ export const CredentialsSection: React.FC = () => {
           >
             Globally accredited certifications in Artificial Intelligence, Cloud Infrastructure, and Machine Learning from Google, IBM, and AWS.
           </motion.p>
-        </motion.div>
-
-        {/* Education & Academic Institution Showcase */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-        >
-          <motion.div variants={itemFadeUp}>
-            <EducationCard />
-          </motion.div>
         </motion.div>
 
         {/* Certifications Header & Grid */}
