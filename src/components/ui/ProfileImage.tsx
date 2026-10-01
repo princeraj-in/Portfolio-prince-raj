@@ -151,6 +151,39 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
           }}
         />
 
+        {/* Continuous Slow-Speed Rotating Circular Living Orbit */}
+        {!prefersReducedMotion && (
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{
+              duration: 32,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+            className="absolute -inset-6 sm:-inset-10 rounded-full border border-dashed border-cyan-500/20 pointer-events-none -z-10"
+          >
+            {/* Ambient quantum orbit particles */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_12px_#00ffff]" />
+            <div className="absolute bottom-4 right-1/4 w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
+            <div className="absolute top-1/3 left-2 w-1.5 h-1.5 rounded-full bg-teal-400 shadow-[0_0_8px_#2dd4bf]" />
+          </motion.div>
+        )}
+
+        {/* Counter-Rotating Inner Specular Circular Ring */}
+        {!prefersReducedMotion && (
+          <motion.div
+            animate={{ rotate: -360 }}
+            transition={{
+              duration: 44,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+            className="absolute -inset-2 sm:-inset-4 rounded-full border border-cyan-400/10 pointer-events-none -z-10"
+          >
+            <div className="absolute top-1/4 -right-1 w-1.5 h-1.5 rounded-full bg-cyan-300 shadow-[0_0_8px_#00ffff]" />
+          </motion.div>
+        )}
+
         {/* Continuous Smooth Floating Animation (Y-axis translation 10-15px infinitely) */}
         <motion.div
           animate={

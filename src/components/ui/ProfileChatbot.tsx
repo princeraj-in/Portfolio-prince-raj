@@ -184,7 +184,7 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
 
   return (
     <div id="profile-chatbot-root" className="fixed bottom-5 right-5 z-50 flex flex-col items-end">
-      {/* Floating High-Tech Holographic Launcher Button */}
+      {/* Floating High-Tech Holographic Launcher Button (Premium Circular Design) */}
       <AnimatePresence>
         {!isOpen && (
           <motion.div
@@ -194,40 +194,101 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
             transition={{ type: 'spring', stiffness: 280, damping: 22 }}
             className="relative group"
           >
-            {/* Outer Cybernetic Rotating Specular Rings */}
-            <div className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 opacity-60 blur-md group-hover:opacity-100 transition-opacity duration-500 animate-pulse pointer-events-none" />
-            
-            {/* Micro Tooltip */}
-            <div className="absolute -top-10 right-0 hidden group-hover:flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/95 border border-cyan-500/40 text-[11px] font-bold text-cyan-300 shadow-xl backdrop-blur-md whitespace-nowrap pointer-events-none">
-              <Sparkles className="w-3 h-3 text-cyan-400 animate-spin" style={{ animationDuration: '4s' }} />
-              <span>Ask Tectra AI about Prince Raj</span>
+            {/* Outer Living Cybernetic Orbital Ring with Continuous Slow-Speed Rotation */}
+            <motion.div
+              className="absolute -inset-3.5 rounded-full border border-dashed border-cyan-500/25 pointer-events-none"
+              animate={{ rotate: 360 }}
+              transition={{
+                duration: 22,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            >
+              {/* Micro Orbit Nodes on the perimeter */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#00ffff]" />
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1 h-1 rounded-full bg-blue-400 shadow-[0_0_6px_#38bdf8]" />
+            </motion.div>
+
+            {/* Counter-Rotating Ambient Aurora Glow */}
+            <motion.div
+              className="absolute -inset-2 rounded-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 opacity-60 blur-xl group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 pointer-events-none"
+              animate={{ rotate: -360 }}
+              transition={{
+                duration: 16,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            />
+
+            {/* Micro Floating Tooltip on Hover */}
+            <div className="absolute -top-11 right-0 hidden group-hover:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/95 border border-cyan-500/40 text-xs font-bold text-cyan-300 shadow-[0_10px_25px_rgba(0,0,0,0.6)] backdrop-blur-xl whitespace-nowrap pointer-events-none transition-all duration-300">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-spin" style={{ animationDuration: '4s' }} />
+              <span>Ask Tectra AI</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
             </div>
 
-            <button
+            {/* Premium Circular Cybernetic Trigger */}
+            <motion.button
               id="chatbot-launcher-btn"
               onClick={() => setIsOpen(true)}
-              className="relative flex items-center gap-3 px-4 sm:px-5 py-3 rounded-full bg-slate-950/90 text-white font-medium shadow-[0_10px_35px_rgba(6,182,212,0.35)] border border-cyan-500/50 hover:border-cyan-400 backdrop-blur-2xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer overflow-hidden"
-              aria-label="Open AI Profile Assistant"
+              whileHover={{ scale: 1.08, y: -2 }}
+              whileTap={{ scale: 0.94 }}
+              className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-[2px] overflow-hidden shadow-[0_10px_35px_rgba(6,182,212,0.45)] hover:shadow-[0_15px_45px_rgba(6,182,212,0.7)] transition-shadow duration-500 cursor-pointer flex items-center justify-center select-none"
+              aria-label="Open Tectra AI Assistant"
             >
-              {/* Internal Sweep Gradient Effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
+              {/* Continuously Rotating Conic Gradient Border - Smooth Slow Speed */}
+              <motion.div
+                className="absolute -inset-[100%] pointer-events-none"
+                style={{
+                  background:
+                    'conic-gradient(from 0deg, #00ffff 0%, #06b6d4 25%, #3b82f6 50%, #6366f1 75%, #00ffff 100%)',
+                }}
+                animate={{ rotate: 360 }}
+                transition={{
+                  duration: 12,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+              />
 
-              {/* Holographic Glowing Core */}
-              <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 via-cyan-500 to-indigo-600 shadow-[0_0_20px_rgba(6,182,212,0.8)]">
-                <Bot className="w-4 h-4 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 border-2 border-slate-950 rounded-full shadow-[0_0_8px_#34d399]" />
-              </div>
+              {/* Obsidian Liquid Glass Core Orb */}
+              <div className="relative z-10 w-full h-full rounded-full bg-slate-950/90 hover:bg-slate-900/90 backdrop-blur-2xl flex items-center justify-center border border-white/10 group-hover:border-cyan-400/40 transition-colors overflow-hidden">
+                {/* Specular Radial Glare on Top Curve */}
+                <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_15%,rgba(0,255,255,0.4),transparent_65%)] pointer-events-none" />
 
-              <div className="flex flex-col text-left">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-black tracking-wider text-cyan-300 uppercase">Tectra AI</span>
-                  <span className="px-1.5 py-0.2 rounded-full bg-cyan-500/20 text-[9px] font-extrabold text-cyan-300 border border-cyan-500/30">
-                    Gemini
-                  </span>
-                </div>
-                <span className="text-[11px] text-slate-300 font-medium">Interactive Intelligence</span>
+                {/* Inner Counter-Rotating Concentric Cybernetic Ring */}
+                <motion.div
+                  className="absolute inset-1.5 rounded-full border border-dashed border-cyan-400/25 group-hover:border-cyan-400/50 pointer-events-none transition-colors"
+                  animate={{ rotate: -360 }}
+                  transition={{
+                    duration: 18,
+                    repeat: Infinity,
+                    ease: 'linear',
+                  }}
+                />
+
+                {/* Center High-Tech AI Bot Icon with Gentle Organic Living Pulse */}
+                <motion.div
+                  className="relative flex items-center justify-center"
+                  animate={{
+                    scale: [1, 1.06, 1],
+                  }}
+                  transition={{
+                    duration: 3.5,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                >
+                  <Bot className="w-6 h-6 sm:w-7 sm:h-7 text-cyan-300 drop-shadow-[0_0_12px_rgba(6,182,212,0.9)] group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300" />
+                </motion.div>
+
+                {/* Emerald Active Status Indicator */}
+                <span className="absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 border border-slate-950 shadow-[0_0_8px_#34d399]" />
+                </span>
               </div>
-            </button>
+            </motion.button>
           </motion.div>
         )}
       </AnimatePresence>
