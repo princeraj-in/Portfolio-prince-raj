@@ -69,6 +69,26 @@ export const HeroVortexCanvas: React.FC = () => {
     const sparks: Spark[] = [];
     const shockwaves: Shockwave[] = [];
 
+    // Avatar core gravitational attractor coordinates
+    const avatarCore = {
+      x: -1000,
+      y: -1000,
+      active: false,
+      radius: 280,
+    };
+
+    const updateAvatarPosition = () => {
+      if (!canvas) return;
+      const avatarEl = document.querySelector('[data-hero-avatar-core]');
+      if (avatarEl) {
+        const cRect = canvas.getBoundingClientRect();
+        const aRect = avatarEl.getBoundingClientRect();
+        avatarCore.x = aRect.left + aRect.width / 2 - cRect.left;
+        avatarCore.y = aRect.top + aRect.height / 2 - cRect.top;
+        avatarCore.active = true;
+      }
+    };
+
     // Initialize particles
     const initParticles = () => {
       particles.length = 0;
@@ -211,8 +231,67 @@ export const HeroVortexCanvas: React.FC = () => {
       }
     };
 
+    // Avatar Quantum Energy Shockwave Listener
+    const handleAvatarShockwave = (e: Event) => {
+      const detail = (e as CustomEvent<{ clientX?: number; clientY?: number; intensity?: number }>).detail;
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const burstX = detail?.clientX !== undefined ? detail.clientX - rect.left : width / 2;
+      const burstY = detail?.clientY !== undefined ? detail.clientY - rect.top : height * 0.32;
+      const intensity = detail?.intensity || 1.5;
+
+      // 1. Spawning high-energy multi-tier radial shockwaves
+      shockwaves.push({
+        x: burstX,
+        y: burstY,
+        radius: 15,
+        maxRadius: Math.max(width, height) * 0.75,
+        alpha: 0.95,
+      });
+      shockwaves.push({
+        x: burstX,
+        y: burstY,
+        radius: 8,
+        maxRadius: Math.max(width, height) * 0.5,
+        alpha: 0.8,
+      });
+
+      // 2. High-speed radial particle dispersion (impulse shock)
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        const dx = p.x - burstX;
+        const dy = p.y - burstY;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        if (dist < 460) {
+          const force = (1 - dist / 460) * 14 * intensity * p.z;
+          p.vx += (dx / dist) * force;
+          p.vy += (dy / dist) * force;
+          p.pulseSpeed *= 1.6;
+        }
+      }
+
+      // 3. Dense quantum spark explosion around avatar
+      for (let i = 0; i < 44; i++) {
+        const angle = (i / 44) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
+        const speed = Math.random() * 6.5 + 3.2;
+        sparks.push({
+          x: burstX,
+          y: burstY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          maxLife: Math.random() * 42 + 28,
+          size: Math.random() * 3.4 + 1.2,
+          hue: Math.random() > 0.4 ? 185 + Math.random() * 35 : 275 + Math.random() * 45,
+        });
+      }
+    };
+
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('click', handleClick, { passive: true });
+    window.addEventListener('hero-avatar-shockwave', handleAvatarShockwave);
+    window.addEventListener('scroll', updateAvatarPosition, { passive: true });
+    updateAvatarPosition();
     if (canvas.parentElement) {
       canvas.parentElement.addEventListener('mouseleave', handleMouseLeave);
     }
@@ -301,6 +380,23 @@ export const HeroVortexCanvas: React.FC = () => {
           // Pull towards vortex center
           p.vx += (dx / dist) * force * 0.45;
           p.vy += (dy / dist) * force * 0.45;
+        }
+
+        // Avatar Core Gravitational Well physics
+        if (avatarCore.active) {
+          const adx = avatarCore.x - p.x;
+          const ady = avatarCore.y - p.y;
+          const aDist = Math.sqrt(adx * adx + ady * ady);
+          if (aDist < avatarCore.radius && aDist > 12) {
+            const aForce = (1 - aDist / avatarCore.radius) * 1.6 * p.z;
+            const tangentAngle = Math.atan2(ady, adx) + Math.PI / 2;
+            // Orbital accretion swirl around avatar
+            p.vx += Math.cos(tangentAngle) * aForce * 0.55;
+            p.vy += Math.sin(tangentAngle) * aForce * 0.55;
+            // Centripetal gravitational pull towards avatar core
+            p.vx += (adx / aDist) * aForce * 0.35;
+            p.vy += (ady / aDist) * aForce * 0.35;
+          }
         }
 
         // Apply friction & natural drift
@@ -418,6 +514,8 @@ export const HeroVortexCanvas: React.FC = () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('click', handleClick);
+      window.removeEventListener('hero-avatar-shockwave', handleAvatarShockwave);
+      window.removeEventListener('scroll', updateAvatarPosition);
       if (canvas.parentElement) {
         canvas.parentElement.removeEventListener('mouseleave', handleMouseLeave);
       }
