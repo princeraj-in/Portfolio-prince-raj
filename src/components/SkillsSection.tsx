@@ -7,7 +7,7 @@ import { staggerContainer, itemFadeUp, itemPop } from '../lib/animations';
 export const SkillsSection: React.FC = () => {
   return (
     <section id="skills" className="relative py-24 z-10 overflow-hidden">
-      <div className="container px-4 md:px-6 mx-auto max-w-6xl">
+      <div className="container px-4 md:px-6 mx-auto max-w-7xl">
         
         {/* Staggered Header Animation */}
         <motion.div 

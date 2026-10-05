@@ -150,13 +150,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const ai = getGenAI(apiKey);
 
     // Exact model hierarchy requested:
-    // 1. Main: Gemini 3.7 Flash
-    // 2. Fallback 1: Gemini 3.6 Flash
-    // 3. Fallback 2: Gemini 3.5 Flash Lite
-    // Plus resilient safety backups (gemini-flash-latest, gemini-2.5-flash)
-    const mainModel = process.env.GEMINI_MODEL?.trim() || 'gemini-3.7-flash';
-    const fallback1 = process.env.GEMINI_FALLBACK_1?.trim() || 'gemini-3.6-flash';
-    const fallback2 = process.env.GEMINI_FALLBACK_2?.trim() || 'gemini-3.5-flash-lite';
+    // 1. Main: Gemini 3.8 Flash
+    // 2. Fallback 1: Gemini 3.7 Flash
+    // 3. Fallback 2: Gemini 2.5 Flash
+    // Plus resilient safety backups (gemini-flash-latest)
+    const mainModel = process.env.GEMINI_MODEL?.trim() || 'gemini-3.8-flash';
+    const fallback1 = process.env.GEMINI_FALLBACK_1?.trim() || 'gemini-3.7-flash';
+    const fallback2 = process.env.GEMINI_FALLBACK_2?.trim() || 'gemini-2.5-flash';
 
     const modelCascade = Array.from(
       new Set([mainModel, fallback1, fallback2, 'gemini-flash-latest', 'gemini-2.5-flash'].filter(Boolean))
@@ -175,8 +175,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           temperature: 0.7,
         };
 
-        // For Gemini 3.7 Flash, optimize latency by disabling extended thinking budget
-        if (currentModel.includes('3.7')) {
+        // For Gemini 3.8 Flash and 3.7 Flash, optimize latency by disabling extended thinking budget
+        if (currentModel.includes('3.8') || currentModel.includes('3.7')) {
           config.thinkingConfig = { thinkingBudget: 0 };
         }
 
