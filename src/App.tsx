@@ -34,7 +34,7 @@ export default function App() {
           
           <Navbar />
           
-          <main className="relative z-10 pt-16">
+          <main className="relative z-10">
             <HeroSection />
             <AboutSection />
             <SkillsSection />
