@@ -1,8 +1,8 @@
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import chatHandler from "./api/chat";
-import healthHandler from "./api/health";
+import chatHandler from "./api/chat.js";
+import healthHandler from "./api/health.js";
 
 const app = express();
 const PORT = 3000;

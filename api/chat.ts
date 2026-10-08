@@ -1,9 +1,205 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { GoogleGenAI } from '@google/genai';
-import { profileData } from '../src/data/profile.ts';
-import { projectsData } from '../src/data/projects.ts';
-import { credentialsData } from '../src/data/credentials.ts';
-import { skillsData } from '../src/data/skills.ts';
+
+// --- Embedded Canonical Portfolio Knowledge Base ---
+// Fully self-contained inside api/chat.ts to guarantee zero ERR_MODULE_NOT_FOUND
+// and 100% reliable execution in Vercel Serverless Functions.
+
+export const profileData = {
+  name: 'Prince Raj',
+  brand: 'ImPrince Tectra',
+  tagline: 'AI Developer & Full Stack Engineer',
+  role: 'AI Developer & Full Stack Engineer',
+  location: 'Patna, Bihar & Remote Worldwide',
+  bio: 'I build modern web apps and AI solutions that turn ideas into real-world products. Focused on clean design, smart systems, and real impact.',
+  availability: 'Available for AI & Full-Stack Engineering roles',
+  contact: {
+    primaryEmail: 'kusprince.raj@gmail.com',
+    domainEmail: 'developer@imprince.me',
+    phone: '+91 8252995548',
+    whatsapp: 'https://wa.me/918252995548',
+    github: 'https://github.com/princeraj-in',
+    linkedin: 'https://www.linkedin.com/in/princeraj-in/',
+    instagram: 'https://instagram.com/princerjjjjj',
+    website: 'https://imprince.me',
+  },
+  metrics: [
+    { label: 'Deployed Platforms', value: '2+', subtext: 'Production systems' },
+    { label: 'AI Focus Area', value: 'LLMs & Agents', subtext: 'Neural architectures' },
+    { label: 'Verified Certifications', value: '7', subtext: 'Google, IBM, AWS' },
+    { label: 'Core Arsenal', value: '15+', subtext: 'Modern toolchains' },
+  ],
+  education: {
+    degree: 'Bachelor of Science in Computer Science & Data Analytics',
+    institution: 'Indian Institute of Technology, Patna',
+    status: 'In Progress',
+  },
+};
+
+export const credentialsData = [
+  {
+    id: 'google-security',
+    course: 'Connect and Protect: Networks and Network Security',
+    company: 'Google',
+    date: 'Jan 16, 2026',
+    url: 'https://coursera.org/verify/4OYZNCAMLVNB',
+    category: 'Security',
+  },
+  {
+    id: 'ibm-ml',
+    course: 'Machine Learning with Python',
+    company: 'IBM',
+    date: 'Dec 20, 2025',
+    url: 'https://coursera.org/verify/XMWSP1OIM1R2',
+    category: 'AI / ML',
+  },
+  {
+    id: 'ibm-genai-app',
+    course: 'Develop Generative AI Applications: Get Started',
+    company: 'IBM',
+    date: 'Dec 12, 2025',
+    url: 'https://coursera.org/verify/YMFCRD9D750W',
+    category: 'AI / ML',
+  },
+  {
+    id: 'aws-ai-practitioner',
+    course: 'AWS Artificial Intelligence Practitioner',
+    company: 'AWS',
+    date: 'Dec 11, 2025',
+    url: 'https://coursera.org/verify/HG4W9BZK9BLI',
+    category: 'Cloud',
+  },
+  {
+    id: 'gcp-intro-llm',
+    course: 'Introduction to Large Language Models',
+    company: 'Google Cloud',
+    date: 'Dec 2, 2025',
+    url: 'https://coursera.org/verify/0LBYP4FDCQT4',
+    category: 'AI / ML',
+  },
+  {
+    id: 'ibm-python-ds',
+    course: 'Python for Data Science, AI & Development',
+    company: 'IBM',
+    date: 'Nov 17, 2025',
+    url: 'https://coursera.org/verify/TE0ACYVR0G0G',
+    category: 'Data Science',
+  },
+  {
+    id: 'gcp-intro-genai',
+    course: 'Introduction to Generative AI',
+    company: 'Google Cloud',
+    date: 'Oct 25, 2025',
+    url: 'https://coursera.org/verify/WYBIO9D7RH8Z',
+    category: 'AI / ML',
+  },
+];
+
+export const skillsData = [
+  {
+    id: 'ai-engineering',
+    name: 'AI Engineering & Agents',
+    skills: [
+      { name: 'Large Language Models (LLMs)', level: 92, description: 'Gemini 3.6/3.5, OpenAI, Claude API integration & prompt engineering' },
+      { name: 'Multi-Agent Systems', level: 90, description: 'Autonomous agentic pipelines, LangGraph, CrewAI & task orchestration' },
+      { name: 'RAG & Vector Retrieval', level: 88, description: 'Hybrid search, semantic chunking, embeddings & vector stores' },
+      { name: 'PyTorch & TensorFlow', level: 84, description: 'Deep learning modeling, transfer learning & tensor computations' },
+      { name: 'Vector DBs (Chroma, Pinecone)', level: 86, description: 'High-throughput vector indexing and similarity retrieval' },
+    ],
+  },
+  {
+    id: 'frontend',
+    name: 'Frontend Architecture',
+    skills: [
+      { name: 'React 19 & Next.js', level: 95, description: 'Server components, hooks, concurrent rendering & performance' },
+      { name: 'TypeScript', level: 94, description: 'Strict typing, generic abstractions & enterprise patterns' },
+      { name: 'Tailwind CSS', level: 96, description: 'Custom design systems, dark mode & fluid responsive layouts' },
+      { name: 'Motion / Framer Motion', level: 92, description: 'Complex physics springs, gesture micro-interactions & layout animations' },
+      { name: 'HTML5 Canvas & Web Audio', level: 85, description: 'GPU-accelerated interactive particle canvases and sound synthesizers' },
+    ],
+  },
+  {
+    id: 'backend',
+    name: 'Backend & Cloud Systems',
+    skills: [
+      { name: 'Node.js & Express', level: 92, description: 'REST APIs, serverless functions, middleware & stream processing' },
+      { name: 'Python (FastAPI, Flask)', level: 90, description: 'Asynchronous APIs, ML model inference & data pipelines' },
+      { name: 'Firebase & Cloud Firestore', level: 92, description: 'Real-time database rules, security hardening, Auth & storage' },
+      { name: 'Docker & Microservices', level: 84, description: 'Containerization, reproducible environments & cloud deployment' },
+      { name: 'PostgreSQL & SQL', level: 86, description: 'Relational schemas, query optimization & ACID transactions' },
+    ],
+  },
+  {
+    id: 'tools',
+    name: 'DevOps & Toolchains',
+    skills: [
+      { name: 'Git & GitHub', level: 94, description: 'Branching workflows, CI/CD actions & semantic versioning' },
+      { name: 'Vite & Modern Bundlers', level: 92, description: 'Fast build pipelines, code splitting & tree shaking' },
+      { name: 'Vercel & Cloudflare', level: 90, description: 'Edge deployments, serverless functions & DNS/CDN management' },
+      { name: 'Cloudinary CDN', level: 88, description: 'Adaptive media delivery, transformations & streaming compression' },
+    ],
+  },
+];
+
+export const projectsData = [
+  {
+    id: 'lensdrop',
+    name: 'LensDrop',
+    tagline: 'Frictionless QR-Based Event Media & Memory Cloud',
+    category: 'Real-Time Event Media Platform',
+    typeBadge: 'Live Production',
+    description: 'A modern event memory-sharing platform. Event hosts generate an instant live QR code; guests upload original high-resolution photos and videos directly from their mobile browser without installing an app or registering.',
+    shortHighlights: [
+      'QR-based instant guest media upload (Zero App Install Required)',
+      'Client-side offscreen HTML5 Canvas bilinear media compression',
+      'Real-time Firestore live reception slideshow projector feed',
+      'Distributed Cloudinary edge CDN ingestion with WebP/AVIF streaming',
+      '1-Click client-side streaming JSZip batch archive download',
+    ],
+    techStack: [
+      'React 19',
+      'TypeScript',
+      'Vite',
+      'Tailwind CSS',
+      'Firebase Auth',
+      'Cloud Firestore',
+      'Cloudinary CDN',
+      'Motion',
+    ],
+    githubUrl: 'https://github.com/princeraj-in/Lensdrop',
+    liveUrl: 'https://lensdrop.imprince.me',
+  },
+  {
+    id: 'studolink',
+    name: 'Studolink',
+    tagline: 'Hyper-Local Student Ecosystem & AI Companion Platform',
+    category: 'Hyper-Local Community Platform',
+    typeBadge: 'Live Production',
+    description: 'A comprehensive student life platform engineered for major educational and coaching hubs across India. Connects students with verified PGs, hostels, tiffins, study spaces, roommate matching, and a trusted peer-to-peer campus marketplace.',
+    shortHighlights: [
+      'Smart discovery of verified PGs, hostels, libraries & tiffin services',
+      'AI Mitra: Bilingual Gemini-powered student assistance in Hindi & English',
+      'Direct in-app messaging between students, property owners, and peers',
+      'Verified badge system protecting identity and housing legitimacy',
+      'P2P marketplace for textbooks, furniture, and student essentials',
+      'Algorithmic roommate compatibility scoring based on budget and habits',
+    ],
+    techStack: [
+      'React 19',
+      'TypeScript',
+      'Vite',
+      'Tailwind CSS',
+      'Firebase Auth',
+      'Cloud Firestore',
+      'Google Gemini AI',
+      'Cloudinary',
+      'Express',
+      'Vercel',
+    ],
+    githubUrl: 'https://github.com/princeraj-in/CityHelpline',
+    liveUrl: 'https://studolink.imprince.me',
+  },
+];
 
 // --- In-Memory Rolling Rate Limiter ---
 // Protects the serverless endpoint against burst abuse without requiring an external DB.
@@ -37,7 +233,7 @@ function isRateLimited(ip: string): boolean {
   return record.count > MAX_REQUESTS_PER_WINDOW;
 }
 
-// --- Dynamic Canonical System Instruction Generated From Structured Data ---
+// --- Dynamic Canonical System Instruction Generated From Structured Knowledge Base ---
 function buildSystemInstruction(): string {
   const projectsSummary = projectsData
     .map(
@@ -111,6 +307,40 @@ function getGenAI(apiKey: string): GoogleGenAI {
     });
   }
   return aiClient;
+}
+
+// Helper to validate model names (guards against accidentally passing API keys as model names)
+function isValidModelName(name?: string | null): boolean {
+  if (!name) return false;
+  const trimmed = name.trim();
+  if (trimmed.startsWith('AQ.') || trimmed.startsWith('AIza')) return false;
+  return /^gemini-[a-z0-9.-]+$/i.test(trimmed);
+}
+
+// Resilient per-model timeout wrapper to prevent Lambda hangs during upstream spikes
+async function generateWithTimeout(
+  ai: GoogleGenAI,
+  model: string,
+  contents: unknown,
+  config: unknown,
+  timeoutMs = 7000
+) {
+  let timer: NodeJS.Timeout | undefined;
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`Timeout after ${timeoutMs}ms`)), timeoutMs);
+  });
+  try {
+    return await Promise.race([
+      ai.models.generateContent({
+        model,
+        contents: contents as any,
+        config: config as any,
+      }),
+      timeoutPromise,
+    ]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -210,8 +440,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       parts: [{ text: trimmedMessage }],
     });
 
-    // Server-side API key retrieval
-    const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
+    // Server-side API key retrieval with multi-key fallback
+    const keyCandidates = [
+      process.env.GEMINI_API_KEY,
+      process.env.GEMINI_API_KEY_1,
+      process.env.GEMINI_API_KEY_2,
+      process.env.API_KEY,
+      // Fallback: If an API key was accidentally entered in model env vars
+      process.env.GEMINI_MODEL?.startsWith('AQ.') || process.env.GEMINI_MODEL?.startsWith('AIza') ? process.env.GEMINI_MODEL : null,
+      process.env.GEMINI_FALLBACK_1?.startsWith('AQ.') || process.env.GEMINI_FALLBACK_1?.startsWith('AIza') ? process.env.GEMINI_FALLBACK_1 : null,
+    ];
+    const apiKey = keyCandidates.find((k) => typeof k === 'string' && k.trim().length > 10)?.trim();
+
     if (!apiKey) {
       return res.status(503).json({
         error: 'AI service temporarily unavailable due to missing API key configuration.',
@@ -223,16 +463,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const ai = getGenAI(apiKey);
 
     // Resilient model cascade:
-    // 1. Primary: Gemini 3.8 Flash (or configured GEMINI_MODEL)
-    // 2. Fallback 1: gemini-flash-latest (or configured GEMINI_FALLBACK_1)
-    // 3. Fallback 2: gemini-2.5-flash (or configured GEMINI_FALLBACK_2)
-    // 4. Fallback 3: gemini-3.1-flash-lite
-    const mainModel = process.env.GEMINI_MODEL?.trim() || 'gemini-3.8-flash';
-    const fallback1 = process.env.GEMINI_FALLBACK_1?.trim() || 'gemini-flash-latest';
-    const fallback2 = process.env.GEMINI_FALLBACK_2?.trim() || 'gemini-2.5-flash';
+    // 1. Primary: Gemini 3.6 Flash (gemini-3.6-flash)
+    // 2. Fallback 1: Gemini 3.5 Flash (gemini-3.5-flash)
+    // 3. Fallback 2: Gemini 3.5 Flash Lite (gemini-3.5-flash-lite)
+    // 4. Safety Fallback: Gemini 2.5 Flash (gemini-2.5-flash)
+    const mainModel = isValidModelName(process.env.GEMINI_MODEL)
+      ? process.env.GEMINI_MODEL!.trim()
+      : 'gemini-3.6-flash';
+    const fallback1 = isValidModelName(process.env.GEMINI_FALLBACK_1)
+      ? process.env.GEMINI_FALLBACK_1!.trim()
+      : 'gemini-3.5-flash';
+    const fallback2 = isValidModelName(process.env.GEMINI_FALLBACK_2)
+      ? process.env.GEMINI_FALLBACK_2!.trim()
+      : 'gemini-3.5-flash-lite';
 
     const modelCascade = Array.from(
-      new Set([mainModel, fallback1, fallback2, 'gemini-flash-latest', 'gemini-3.1-flash-lite', 'gemini-2.5-flash'].filter(Boolean))
+      new Set([
+        mainModel,
+        fallback1,
+        fallback2,
+        'gemini-3.6-flash',
+        'gemini-3.5-flash',
+        'gemini-3.5-flash-lite',
+        'gemini-2.5-flash',
+      ].filter(Boolean))
     );
 
     let successfulReply: string | null = null;
@@ -240,16 +494,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     for (const currentModel of modelCascade) {
       try {
-        const config: { systemInstruction: string; temperature: number } = {
+        const config = {
           systemInstruction: SYSTEM_INSTRUCTION,
           temperature: 0.65,
         };
 
-        const response = await ai.models.generateContent({
-          model: currentModel,
-          contents,
-          config,
-        });
+        const response = await generateWithTimeout(ai, currentModel, contents, config, 7000);
 
         const replyText = response.text?.trim();
         if (replyText) {
@@ -280,7 +530,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       code: 'HIGH_DEMAND_503',
       retryable: true,
     });
-  } catch {
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : String(err);
+    console.error('[Tectra AI] Unhandled handler error:', errorMsg);
     // Sanitized server error (never leak internal stack traces)
     return res.status(500).json({
       error: 'An internal error occurred while processing your request. Please try again.',
