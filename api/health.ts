@@ -7,6 +7,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
 
   res.status(200).json({
     status: 'ok',
-    hasApiKey: Boolean(process.env.GEMINI_API_KEY),
+    hasApiKey: Boolean(process.env.GEMINI_API_KEY || process.env.API_KEY),
+    timestamp: new Date().toISOString(),
   });
 }

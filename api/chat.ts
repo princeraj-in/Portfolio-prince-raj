@@ -1,9 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { GoogleGenAI } from '@google/genai';
-import { profileData } from '../src/data/profile';
-import { projectsData } from '../src/data/projects';
-import { credentialsData } from '../src/data/credentials';
-import { skillsData } from '../src/data/skills';
+import { profileData } from '../src/data/profile.ts';
+import { projectsData } from '../src/data/projects.ts';
+import { credentialsData } from '../src/data/credentials.ts';
+import { skillsData } from '../src/data/skills.ts';
 
 // --- In-Memory Rolling Rate Limiter ---
 // Protects the serverless endpoint against burst abuse without requiring an external DB.
@@ -223,16 +223,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const ai = getGenAI(apiKey);
 
     // Resilient model cascade:
-    // 1. Primary: Gemini 3.8 Flash (or configured model)
-    // 2. Fallback 1: Gemini 3.7 Flash
-    // 3. Fallback 2: Gemini 2.5 Flash
-    // 4. Fallback 3: gemini-flash-latest
+    // 1. Primary: Gemini 3.8 Flash (or configured GEMINI_MODEL)
+    // 2. Fallback 1: gemini-flash-latest (or configured GEMINI_FALLBACK_1)
+    // 3. Fallback 2: gemini-2.5-flash (or configured GEMINI_FALLBACK_2)
+    // 4. Fallback 3: gemini-3.1-flash-lite
     const mainModel = process.env.GEMINI_MODEL?.trim() || 'gemini-3.8-flash';
-    const fallback1 = process.env.GEMINI_FALLBACK_1?.trim() || 'gemini-3.7-flash';
+    const fallback1 = process.env.GEMINI_FALLBACK_1?.trim() || 'gemini-flash-latest';
     const fallback2 = process.env.GEMINI_FALLBACK_2?.trim() || 'gemini-2.5-flash';
 
     const modelCascade = Array.from(
-      new Set([mainModel, fallback1, fallback2, 'gemini-flash-latest', 'gemini-2.5-flash'].filter(Boolean))
+      new Set([mainModel, fallback1, fallback2, 'gemini-flash-latest', 'gemini-3.1-flash-lite', 'gemini-2.5-flash'].filter(Boolean))
     );
 
     let successfulReply: string | null = null;
@@ -240,14 +240,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     for (const currentModel of modelCascade) {
       try {
-        const config: { systemInstruction: string; temperature: number; thinkingConfig?: { thinkingBudget: number } } = {
+        const config: { systemInstruction: string; temperature: number } = {
           systemInstruction: SYSTEM_INSTRUCTION,
           temperature: 0.65,
         };
-
-        if (currentModel.includes('3.8') || currentModel.includes('3.7')) {
-          config.thinkingConfig = { thinkingBudget: 0 };
-        }
 
         const response = await ai.models.generateContent({
           model: currentModel,
@@ -261,8 +257,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           successfulModel = currentModel;
           break;
         }
-      } catch {
-        // Shift instantly to the next model in cascade without exposing internal errors
+      } catch (err: unknown) {
+        // Log sanitized diagnosis to server runtime logs for visibility without leaking secrets
+        const errorMsg = err instanceof Error ? err.message : String(err);
+        console.warn(`[Tectra AI] Model ${currentModel} invocation failed:`, errorMsg);
         continue;
       }
     }
