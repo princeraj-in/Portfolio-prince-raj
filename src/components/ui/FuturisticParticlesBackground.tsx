@@ -10,14 +10,15 @@ export interface FuturisticParticlesBackgroundProps {
 export const FuturisticParticlesBackground: React.FC<FuturisticParticlesBackgroundProps> = ({
   className = '',
 }) => {
-  const options: ISourceOptions = useMemo(
-    () => ({
+  const options: ISourceOptions = useMemo(() => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    return {
       fullScreen: {
         enable: false,
         zIndex: -1,
       },
-      fpsLimit: 60,
-      detectRetina: true,
+      fpsLimit: isMobile ? 30 : 60,
+      detectRetina: !isMobile,
       pauseOnBlur: true,
       pauseOnOutsideViewport: true,
       background: {
@@ -29,7 +30,7 @@ export const FuturisticParticlesBackground: React.FC<FuturisticParticlesBackgrou
         detectsOn: 'window',
         events: {
           onHover: {
-            enable: true,
+            enable: !isMobile,
             mode: 'attract',
           },
           onClick: {
@@ -43,13 +44,13 @@ export const FuturisticParticlesBackground: React.FC<FuturisticParticlesBackgrou
         },
         modes: {
           attract: {
-            distance: 220,
+            distance: 200,
             duration: 0.4,
-            speed: 2.5,
-            maxSpeed: 4,
+            speed: 2.2,
+            maxSpeed: 3.5,
           },
           repulse: {
-            distance: 200,
+            distance: 180,
             duration: 0.4,
             speed: 1.5,
           },
@@ -57,10 +58,10 @@ export const FuturisticParticlesBackground: React.FC<FuturisticParticlesBackgrou
       },
       particles: {
         number: {
-          value: 45,
+          value: isMobile ? 22 : 42,
           density: {
             enable: true,
-            area: 950,
+            area: isMobile ? 1200 : 950,
           },
         },
         color: {
@@ -70,45 +71,45 @@ export const FuturisticParticlesBackground: React.FC<FuturisticParticlesBackgrou
           type: 'circle',
         },
         opacity: {
-          value: { min: 0.35, max: 0.85 },
+          value: { min: 0.3, max: 0.8 },
           animation: {
-            enable: true,
+            enable: !isMobile,
             speed: 0.8,
             minimumValue: 0.2,
             sync: false,
           },
         },
         size: {
-          value: { min: 1.8, max: 3.8 },
+          value: { min: 1.6, max: 3.4 },
           animation: {
-            enable: true,
-            speed: 1.5,
+            enable: !isMobile,
+            speed: 1.2,
             minimumValue: 1.2,
             sync: false,
           },
         },
         shadow: {
-          enable: true,
+          enable: !isMobile,
           color: '#00FFFF',
-          blur: 8,
+          blur: 6,
         },
         links: {
           enable: true,
-          distance: 145,
+          distance: isMobile ? 110 : 140,
           color: '#00FFFF',
-          opacity: 0.22,
+          opacity: isMobile ? 0.15 : 0.22,
           width: 1,
           triangles: {
             enable: false,
           },
         },
         collisions: {
-          enable: true,
+          enable: !isMobile,
           mode: 'bounce',
         },
         move: {
           enable: true,
-          speed: 0.9,
+          speed: isMobile ? 0.6 : 0.85,
           direction: 'none',
           random: true,
           straight: false,
@@ -117,9 +118,8 @@ export const FuturisticParticlesBackground: React.FC<FuturisticParticlesBackgrou
           },
         },
       },
-    }),
-    []
-  );
+    };
+  }, []);
 
   return (
     <div

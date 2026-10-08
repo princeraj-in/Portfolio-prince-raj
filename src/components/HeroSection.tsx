@@ -22,14 +22,6 @@ export default function Hero() {
     }
   };
 
-  const handleScrollToContact = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const contactSection = document.getElementById("contact");
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <section
       id="hero"
@@ -39,7 +31,7 @@ export default function Hero() {
       {/* Ambient Backdrop for ultra-wide / portrait displays */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <img
-          src="/hero_section.webp?v=5"
+          src="/hero_section.webp?v=6"
           alt=""
           className="w-full h-full object-cover object-center blur-2xl opacity-40 scale-110"
         />
@@ -56,7 +48,7 @@ export default function Hero() {
       >
         <div className="relative w-full h-full max-w-[177.78vh] max-h-[56.25vw] aspect-[1672/941] flex items-center justify-center">
           <img
-            src="/hero_section.webp?v=5"
+            src="/hero_section.webp?v=6"
             alt="Prince Raj - Full Stack Developer"
             loading="eager"
             decoding="async"
@@ -74,34 +66,15 @@ export default function Hero() {
             whileTap={{ scale: 0.96 }}
             className="absolute z-30 cursor-pointer rounded-full transition-transform"
             style={{
-              left: '5.2%',
-              top: '59.6%',
-              width: '12.8%',
-              height: '7.2%',
+              left: '4.8%',
+              top: '59.5%',
+              width: '13.1%',
+              height: '6.9%',
             }}
             aria-label="View My Work - Jump to Projects"
             title="View My Work"
           >
             <div className="w-full h-full rounded-full opacity-0 hover:opacity-100 bg-amber-400/20 border border-amber-400/60 shadow-[0_0_25px_rgba(251,191,36,0.6)] transition-opacity duration-300" />
-          </motion.a>
-
-          {/* Clickable 'Contact Me' Hotspot with Smooth Scroll to Contact */}
-          <motion.a
-            href="#contact"
-            onClick={handleScrollToContact}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.96 }}
-            className="absolute z-30 cursor-pointer rounded-full transition-transform"
-            style={{
-              left: '18.6%',
-              top: '59.6%',
-              width: '11.8%',
-              height: '7.2%',
-            }}
-            aria-label="Contact Me - Scroll to Contact"
-            title="Contact Me"
-          >
-            <div className="w-full h-full rounded-full opacity-0 hover:opacity-100 bg-white/10 border border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-opacity duration-300" />
           </motion.a>
         </div>
       </motion.div>

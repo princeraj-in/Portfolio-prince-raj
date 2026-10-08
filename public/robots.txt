@@ -1,0 +1,5 @@
+# Robots.txt for ImPrince Tectra (Prince Raj | AI Developer)
+User-agent: *
+Allow: /
+
+Sitemap: https://imprince.me/sitemap.xml

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { soundManager } from './soundEffects';
+import { soundManager } from './sound-manager';
 
 export interface ChatMessage {
   id: string;

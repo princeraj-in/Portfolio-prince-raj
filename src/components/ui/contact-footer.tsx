@@ -132,7 +132,7 @@ const LiquidLetsConnectCard = ({ onToast }: { onToast: (msg: string) => void }) 
             </div>
             
             <p className="text-slate-300 text-base md:text-lg max-w-md leading-relaxed font-normal">
-              Looking for quantitative trading algorithms, autonomous AI workflows, or high-performance full-stack architectures? Let's build what's next.
+              Looking for intelligent autonomous AI workflows, scalable neural systems, or high-performance full-stack architectures? Let's build what's next.
             </p>
           </div>
 

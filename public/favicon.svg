@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="pGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="50%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#05070D" />
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="none" stroke="url(#pGrad)" stroke-width="2" opacity="0.6" />
+  <!-- Futuristic PR Monogram / Cyber Terminal -->
+  <path d="M18 16 H34 C41 16 45 20 45 27 C45 34 41 38 34 38 H26 V48 H18 Z M26 23 V31 H33 C36 31 37.5 29.5 37.5 27 C37.5 24.5 36 23 33 23 Z" fill="url(#pGrad)" />
+  <path d="M36 37 L46 48 H37 L29 38 Z" fill="#00FFFF" opacity="0.9" />
+</svg>

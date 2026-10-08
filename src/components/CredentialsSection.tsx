@@ -3,74 +3,7 @@ import { motion } from 'motion/react';
 import { ExternalLink, Award, Sparkles, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { SpotlightCard } from './ui/spotlight-card';
 import { staggerContainer, staggerGrid, itemFadeUp, itemPop } from '../lib/animations';
-
-interface Credential {
-  course: string;
-  company: string;
-  date: string;
-  url: string;
-  badgeColor: string;
-  accentGradient: string;
-}
-
-const credentials: Credential[] = [
-  {
-    course: "Connect and Protect: Networks and Network Security",
-    company: "Google",
-    date: "Jan 16, 2026",
-    url: "https://coursera.org/verify/4OYZNCAMLVNB",
-    badgeColor: "text-blue-400 bg-blue-500/10 border-blue-500/20",
-    accentGradient: "from-blue-500 to-cyan-400"
-  },
-  {
-    course: "Machine Learning with Python",
-    company: "IBM",
-    date: "Dec 20, 2025",
-    url: "https://coursera.org/verify/XMWSP1OIM1R2",
-    badgeColor: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
-    accentGradient: "from-indigo-500 to-blue-500"
-  },
-  {
-    course: "Develop Generative AI Applications: Get Started",
-    company: "IBM",
-    date: "Dec 12, 2025",
-    url: "https://coursera.org/verify/YMFCRD9D750W",
-    badgeColor: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
-    accentGradient: "from-indigo-500 to-purple-500"
-  },
-  {
-    course: "AWS Artificial Intelligence Practitioner",
-    company: "AWS",
-    date: "Dec 11, 2025",
-    url: "https://coursera.org/verify/HG4W9BZK9BLI",
-    badgeColor: "text-amber-400 bg-amber-500/10 border-amber-500/20",
-    accentGradient: "from-amber-500 to-orange-500"
-  },
-  {
-    course: "Introduction to Large Language Models",
-    company: "Google Cloud",
-    date: "Dec 2, 2025",
-    url: "https://coursera.org/verify/0LBYP4FDCQT4",
-    badgeColor: "text-blue-400 bg-blue-500/10 border-blue-500/20",
-    accentGradient: "from-blue-500 to-teal-400"
-  },
-  {
-    course: "Python for Data Science, AI & Development",
-    company: "IBM",
-    date: "Nov 17, 2025",
-    url: "https://coursera.org/verify/TE0ACYVR0G0G",
-    badgeColor: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
-    accentGradient: "from-indigo-500 to-cyan-400"
-  },
-  {
-    course: "Introduction to Generative AI",
-    company: "Google Cloud",
-    date: "Oct 25, 2025",
-    url: "https://coursera.org/verify/WYBIO9D7RH8Z",
-    badgeColor: "text-blue-400 bg-blue-500/10 border-blue-500/20",
-    accentGradient: "from-blue-500 to-purple-400"
-  }
-];
+import { credentialsData, type Credential } from '../data/credentials';
 
 export const CredentialsSection: React.FC = () => {
   return (
@@ -138,8 +71,8 @@ export const CredentialsSection: React.FC = () => {
             variants={staggerGrid}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2"
           >
-            {credentials.map((cred, idx) => (
-              <motion.div key={idx} variants={itemFadeUp} className="h-full">
+            {credentialsData.map((cred, idx) => (
+              <motion.div key={cred.id || idx} variants={itemFadeUp} className="h-full">
                 <SpotlightCard
                   className="group relative block h-full rounded-[2.2rem] overflow-hidden backdrop-blur-2xl bg-slate-950/70 border border-white/10 shadow-[0_12px_35px_rgba(0,0,0,0.4)] hover:shadow-[0_15px_40px_rgba(6,182,212,0.2)] transition-all duration-300"
                   spotlightColor="rgba(6, 182, 212, 0.25)"

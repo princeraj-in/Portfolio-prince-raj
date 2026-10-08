@@ -254,7 +254,7 @@ The project is pre-configured with zero-config Vercel edge deployment:
       <img src="https://img.shields.io/badge/IIT_Patna-BS_CS_%26_DA-0052CC?style=for-the-badge" alt="IIT Patna" />
     </td>
     <td>
-      <strong>Prince Raj</strong> is an <strong>AI Developer, Quantitative Trader, and Systems Engineer</strong>. He builds autonomous agentic pipelines, high-throughput execution engines, and reactive web platforms. Currently pursuing a Bachelor of Science in <em>Computer Science & Data Analytics</em> at the <strong>Indian Institute of Technology, Patna</strong>.
+      <strong>Prince Raj</strong> is an <strong>AI Developer and Full Stack Engineer</strong>. He builds autonomous agentic pipelines, scalable neural systems, and modern web platforms. Currently pursuing a Bachelor of Science in <em>Computer Science & Data Analytics</em> at the <strong>Indian Institute of Technology, Patna</strong>.
     </td>
   </tr>
 </table>
