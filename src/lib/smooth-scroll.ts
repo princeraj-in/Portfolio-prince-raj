@@ -19,6 +19,14 @@ export function useSmoothScroll() {
       smoothWheel: true,
       wheelMultiplier: 0.95,
       touchMultiplier: 1.6,
+      prevent: (node: HTMLElement) => {
+        return Boolean(
+          node.hasAttribute?.('data-lenis-prevent') ||
+          node.closest?.('[data-lenis-prevent]') ||
+          node.closest?.('#profile-chatbot-root') ||
+          node.closest?.('#chatbot-window')
+        );
+      },
     });
 
     let rafId: number;

@@ -117,10 +117,10 @@ export const Navbar: React.FC = () => {
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.94 }}
               className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 text-xs font-bold transition-all shadow-sm hover:shadow-[0_0_15px_rgba(6,182,212,0.5)] cursor-pointer"
-              title="Chat with Tectra AI"
+              title="Chat with Tetra AI"
             >
               <Bot className="w-3.5 h-3.5 flex-shrink-0 text-cyan-400" />
-              <span className="hidden sm:inline">Ask AI</span>
+              <span className="hidden sm:inline font-bold">Tetra AI</span>
             </motion.button>
 
             {/* Mobile Menu Toggle */}
@@ -158,6 +158,22 @@ export const Navbar: React.FC = () => {
                   {link.name}
                 </a>
               ))}
+
+              {/* Mobile Quick Launcher for Tetra AI */}
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent('open-tectra-chat'));
+                }}
+                className="mt-2 flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-indigo-500/20 border border-cyan-400/40 text-cyan-300 text-sm font-bold shadow-[0_0_20px_rgba(6,182,212,0.25)] hover:bg-cyan-500/30 transition-all cursor-pointer"
+              >
+                <Bot className="w-4 h-4 text-cyan-400" />
+                <span>Chat with Tetra AI</span>
+                <span className="relative flex h-2 w-2 ml-1">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                </span>
+              </button>
             </motion.div>
           )}
         </AnimatePresence>

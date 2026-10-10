@@ -323,3 +323,31 @@
   from { transform: rotate(360deg); }
   to { transform: rotate(0deg); }
 }
+
+/* Custom scrollbar styling for floating chat window */
+.chat-scroll-container {
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(6, 182, 212, 0.45) rgba(255, 255, 255, 0.03) !important;
+}
+
+.chat-scroll-container::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+.chat-scroll-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-radius: 9999px !important;
+}
+
+.chat-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(6, 182, 212, 0.45) !important;
+  border-radius: 9999px !important;
+  transition: background 0.2s ease !important;
+}
+
+.chat-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 182, 212, 0.8) !important;
+}

@@ -255,7 +255,7 @@ function buildSystemInstruction(): string {
     .map((cat) => `  * ${cat.name}: ${cat.skills.map((s) => s.name).join(', ')}`)
     .join('\n');
 
-  return `You are "Tectra AI", the official intelligent portfolio assistant for ${profileData.name} (Brand: ${profileData.brand}).
+  return `You are "Tetra AI", the official intelligent portfolio assistant for ${profileData.name} (Brand: ${profileData.brand}).
 Your mission is to represent Prince Raj professionally, concisely, accurately, and enthusiastically to tech leads, recruiters, clients, and collaborators.
 
 Core Knowledge Base:

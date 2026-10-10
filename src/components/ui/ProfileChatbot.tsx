@@ -22,6 +22,7 @@ import {
   ArrowUpRight,
   MessageSquare,
   Activity,
+  ChevronDown,
 } from 'lucide-react';
 import {
   useChatbot,
@@ -163,19 +164,50 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
     exportConversation,
   } = useChatbot();
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatScrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [showScrollBottomBtn, setShowScrollBottomBtn] = useState(false);
+  const isUserScrolledUp = useRef(false);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToBottom = (smooth = true) => {
+    if (chatScrollRef.current) {
+      chatScrollRef.current.scrollTo({
+        top: chatScrollRef.current.scrollHeight,
+        behavior: smooth ? 'smooth' : 'auto',
+      });
+    }
   };
 
+  const handleScroll = () => {
+    if (!chatScrollRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = chatScrollRef.current;
+    const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+    const scrolledUp = distanceFromBottom > 90;
+    isUserScrolledUp.current = scrolledUp;
+    setShowScrollBottomBtn(scrolledUp);
+  };
+
+  // Auto scroll on new messages if user has not scrolled up to read earlier history
   useEffect(() => {
     if (isOpen && !isMinimized) {
-      scrollToBottom();
-      setTimeout(() => inputRef.current?.focus(), 150);
+      if (!isUserScrolledUp.current) {
+        scrollToBottom(true);
+      }
     }
-  }, [isOpen, isMinimized, messages, isLoading]);
+  }, [messages.length, isLoading]);
+
+  // When opening chat, reset user scroll state and scroll cleanly to bottom
+  useEffect(() => {
+    if (isOpen && !isMinimized) {
+      isUserScrolledUp.current = false;
+      setShowScrollBottomBtn(false);
+      const timer = setTimeout(() => {
+        scrollToBottom(false);
+        inputRef.current?.focus();
+      }, 70);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, isMinimized]);
 
   // Global trigger listener for 'open-tectra-chat'
   useEffect(() => {
@@ -204,7 +236,11 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
     CATEGORIZED_PROMPTS[0];
 
   return (
-    <div id="profile-chatbot-root" className="fixed bottom-5 right-5 z-50 flex flex-col items-end">
+    <div
+      id="profile-chatbot-root"
+      data-lenis-prevent="true"
+      className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-50 flex flex-col items-end max-w-[calc(100vw-1.5rem)]"
+    >
       {/* Floating Ultra-Premium Holographic Launcher Button */}
       <AnimatePresence>
         {!isOpen && (
@@ -243,7 +279,7 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
             {/* Floating Luxury Tooltip on Hover */}
             <div className="absolute -top-12 right-0 hidden group-hover:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/95 border border-cyan-500/40 text-xs font-semibold text-cyan-200 shadow-[0_12px_30px_rgba(0,0,0,0.8)] backdrop-blur-2xl whitespace-nowrap pointer-events-none transition-all duration-300">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-spin" style={{ animationDuration: '6s' }} />
-              <span>Ask Tectra AI Assistant</span>
+              <span>Ask Tetra AI Assistant</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             </div>
 
@@ -254,7 +290,7 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
               whileHover={{ scale: 1.06, y: -2 }}
               whileTap={{ scale: 0.94 }}
               className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-[2px] overflow-hidden shadow-[0_10px_35px_rgba(6,182,212,0.45)] hover:shadow-[0_15px_45px_rgba(6,182,212,0.7)] transition-shadow duration-500 cursor-pointer flex items-center justify-center select-none"
-              aria-label="Open Tectra AI Assistant"
+              aria-label="Open Tetra AI Assistant"
             >
               {/* Rotating Conic Gradient Border */}
               <motion.div
@@ -299,23 +335,26 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
         {isOpen && (
           <motion.div
             id="chatbot-window"
+            data-lenis-prevent="true"
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
             initial={{ opacity: 0, y: 30, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.92 }}
             transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-            className={`w-[calc(100vw-2rem)] ${
+            className={`w-[calc(100vw-1.5rem)] ${
               isExpanded
-                ? 'sm:w-[620px] md:w-[720px] h-[680px] max-h-[90vh]'
-                : 'sm:w-[420px] md:w-[460px] h-[590px] max-h-[85vh]'
+                ? 'sm:w-[620px] md:w-[720px] h-[680px] max-h-[90dvh] sm:max-h-[90vh]'
+                : 'sm:w-[420px] md:w-[460px] h-[580px] max-h-[85dvh] sm:max-h-[85vh]'
             } ${
               isMinimized ? '!h-auto' : ''
-            } rounded-3xl bg-[#090d16]/95 border border-cyan-500/35 shadow-[0_30px_90px_rgba(0,0,0,0.85),0_0_45px_rgba(6,182,212,0.18)] backdrop-blur-3xl flex flex-col overflow-hidden text-slate-100 transition-all duration-300`}
+            } rounded-[2rem] sm:rounded-3xl bg-[#090d16]/95 border border-cyan-500/35 shadow-[0_30px_90px_rgba(0,0,0,0.85),0_0_45px_rgba(6,182,212,0.18)] backdrop-blur-3xl flex flex-col overflow-hidden text-slate-100 transition-all duration-300`}
           >
             {/* Top Specular Neon Beam Highlight */}
             <div className="absolute inset-x-8 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-cyan-400/70 to-transparent pointer-events-none" />
 
             {/* Studio Header Bar */}
-            <div className="relative flex items-center justify-between px-4 py-3.5 border-b border-white/[0.08] bg-gradient-to-r from-slate-950/90 via-[#0b101d]/90 to-slate-950/90">
+            <div className="relative flex items-center justify-between px-4 py-3.5 border-b border-white/[0.08] bg-gradient-to-r from-slate-950/90 via-[#0b101d]/90 to-slate-950/90 flex-shrink-0">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="relative flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-2xl bg-gradient-to-tr from-cyan-600 via-blue-600 to-indigo-600 shadow-[0_0_18px_rgba(6,182,212,0.45)] border border-cyan-400/30">
                   <Bot className="w-4.5 h-4.5 text-white" />
@@ -331,7 +370,7 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
                     </span>
                   </div>
                   <p className="text-[10px] text-slate-400 flex items-center gap-1.5 truncate mt-1 font-medium">
-                    <span className="truncate">Prince Raj's Portfolio Intelligence</span>
+                    <span className="truncate max-w-[140px] sm:max-w-none">Prince Raj's Portfolio Intelligence</span>
                   </p>
                 </div>
               </div>
@@ -426,7 +465,18 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
             {!isMinimized && (
               <>
                 {/* Chat Messages Stream */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
+                <div
+                  ref={chatScrollRef}
+                  data-lenis-prevent="true"
+                  onScroll={handleScroll}
+                  onWheel={(e) => e.stopPropagation()}
+                  onTouchMove={(e) => e.stopPropagation()}
+                  className="flex-1 min-h-0 overflow-y-auto p-4 space-y-4 chat-scroll-container overscroll-contain touch-pan-y"
+                  style={{
+                    WebkitOverflowScrolling: 'touch',
+                    overscrollBehavior: 'contain',
+                  }}
+                >
                   {messages.map((msg) => {
                     const isUser = msg.role === 'user';
                     const isSpeakingThis = speakingMessageId === msg.id;
@@ -551,12 +601,31 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
                       </div>
                     </motion.div>
                   )}
-
-                  <div ref={messagesEndRef} />
                 </div>
 
+                {/* Floating Jump to Bottom Button if user scrolled up */}
+                <AnimatePresence>
+                  {showScrollBottomBtn && (
+                    <motion.button
+                      initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.8, y: 10 }}
+                      onClick={() => {
+                        isUserScrolledUp.current = false;
+                        setShowScrollBottomBtn(false);
+                        scrollToBottom(true);
+                      }}
+                      className="absolute bottom-[170px] right-6 z-30 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/95 border border-cyan-500/50 text-cyan-300 text-xs font-semibold shadow-[0_8px_25px_rgba(0,0,0,0.8)] backdrop-blur-md hover:bg-slate-800 hover:border-cyan-400 active:scale-95 transition-all cursor-pointer select-none"
+                      title="Scroll to latest message"
+                    >
+                      <ChevronDown className="w-3.5 h-3.5 animate-bounce" />
+                      <span>Jump to Latest</span>
+                    </motion.button>
+                  )}
+                </AnimatePresence>
+
                 {/* Categorized Quick Prompts Strip */}
-                <div className="px-3.5 py-2.5 border-t border-white/[0.08] bg-[#070b12]/90">
+                <div className="px-3.5 py-2.5 border-t border-white/[0.08] bg-[#070b12]/90 flex-shrink-0">
                   {/* Category Tabs */}
                   <div className="flex items-center gap-1 mb-2 overflow-x-auto no-scrollbar pb-0.5">
                     {CATEGORIZED_PROMPTS.map((cat) => (
@@ -592,7 +661,7 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
                 </div>
 
                 {/* Input Command Dock */}
-                <div className="p-3 border-t border-white/[0.08] bg-[#070a12]/95">
+                <div className="p-3 border-t border-white/[0.08] bg-[#070a12]/95 flex-shrink-0">
                   <div className="relative flex items-center gap-2 bg-[#0d121e]/90 border border-white/[0.1] focus-within:border-cyan-400/70 focus-within:ring-2 focus-within:ring-cyan-500/20 rounded-2xl p-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.6)] transition-all">
                     {/* Voice Microphone Button */}
                     <button
@@ -616,7 +685,7 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={handleKeyDown}
-                      placeholder={isListening ? 'Listening to voice...' : 'Ask Tectra AI anything about Prince Raj...'}
+                      placeholder={isListening ? 'Listening to voice...' : 'Ask Tetra AI anything about Prince Raj...'}
                       disabled={isLoading}
                       className="w-full bg-transparent border-none px-2 py-1.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-0 disabled:opacity-50 font-medium"
                     />
@@ -639,7 +708,7 @@ export const ProfileChatbot: React.FC<ProfileChatbotProps> = ({ onNavigate }) =>
                       <Sparkles className="w-2.5 h-2.5 text-cyan-400" />
                       Tetra AI
                     </span>
-                    <span className="text-slate-400">
+                    <span className="text-slate-400 truncate max-w-[160px] sm:max-w-none text-right">
                       ImPrince Tectra • Autonomous Portfolio
                     </span>
                   </div>

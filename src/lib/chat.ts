@@ -75,7 +75,7 @@ export const INITIAL_MESSAGES: ChatMessage[] = [
   {
     id: 'welcome-1',
     role: 'model',
-    content: "Greetings! 👋 I'm **Tectra AI**, the portfolio intelligence assistant for **Prince Raj** (ImPrince Tectra).\n\nI can provide deep technical breakdowns on his **autonomous AI agent systems**, live production platforms like **Studolink** & **LensDrop**, his **7 verified credentials from Google, IBM & AWS**, or instantly connect you for high-impact opportunities.\n\n*How can I assist your team today?*",
+    content: "Greetings! 👋 I'm **Tetra AI**, the portfolio intelligence assistant for **Prince Raj** (ImPrince Tectra).\n\nI can provide deep technical breakdowns on his **autonomous AI agent systems**, live production platforms like **Studolink** & **LensDrop**, his **7 verified credentials from Google, IBM & AWS**, or instantly connect you for high-impact opportunities.\n\n*How can I assist your team today?*",
     timestamp: 'Just now',
   },
 ];
@@ -247,7 +247,7 @@ export function useChatbot(initialMessages: ChatMessage[] = INITIAL_MESSAGES) {
       setMessages((prev) => [...prev, botMessage]);
       soundManager.playReceive();
     } catch (err: any) {
-      console.warn('[Tectra AI] Request encountered temporary failure:', err?.message || err);
+      console.warn('[Tetra AI] Request encountered temporary failure:', err?.message || err);
       setLastFailedPrompt(textToSend);
 
       const isHighDemand =
@@ -259,8 +259,8 @@ export function useChatbot(initialMessages: ChatMessage[] = INITIAL_MESSAGES) {
         id: `bot-err-${Date.now()}`,
         role: 'model',
         content: isHighDemand
-          ? "⚠️ **Tectra AI is currently experiencing high demand from Google AI servers.**\n\nYour message wasn't completed, but automatic failover is active. You can **Retry** with one click below, or reach out to Prince Raj directly:\n\n- 📬 **Email**: [kusprince.raj@gmail.com](mailto:kusprince.raj@gmail.com)\n- 📱 **WhatsApp Direct**: [+91 8252995548](https://wa.me/918252995548)\n- 💼 **LinkedIn**: [linkedin.com/in/princeraj-in](https://www.linkedin.com/in/princeraj-in/)"
-          : "⚠️ **Tectra AI connection temporarily interrupted.**\n\nPlease click **Retry** below to re-send your message, or connect with Prince Raj directly at [kusprince.raj@gmail.com](mailto:kusprince.raj@gmail.com).",
+          ? "⚠️ **Tetra AI is currently experiencing high demand from Google AI servers.**\n\nYour message wasn't completed, but automatic failover is active. You can **Retry** with one click below, or reach out to Prince Raj directly:\n\n- 📬 **Email**: [kusprince.raj@gmail.com](mailto:kusprince.raj@gmail.com)\n- 📱 **WhatsApp Direct**: [+91 8252995548](https://wa.me/918252995548)\n- 💼 **LinkedIn**: [linkedin.com/in/princeraj-in](https://www.linkedin.com/in/princeraj-in/)"
+          : "⚠️ **Tetra AI connection temporarily interrupted.**\n\nPlease click **Retry** below to re-send your message, or connect with Prince Raj directly at [kusprince.raj@gmail.com](mailto:kusprince.raj@gmail.com).",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         isError: true,
         failedPrompt: textToSend,
@@ -298,7 +298,7 @@ export function useChatbot(initialMessages: ChatMessage[] = INITIAL_MESSAGES) {
     const transcript = messages
       .map(
         (m) =>
-          `[${m.timestamp}] ${m.role === 'user' ? 'You' : 'Tectra AI'}:\n${m.content}\n`
+          `[${m.timestamp}] ${m.role === 'user' ? 'You' : 'Tetra AI'}:\n${m.content}\n`
       )
       .join('\n---\n\n');
 
@@ -306,7 +306,7 @@ export function useChatbot(initialMessages: ChatMessage[] = INITIAL_MESSAGES) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `Tectra-AI-Transcript-${new Date().toISOString().slice(0, 10)}.md`;
+    link.download = `Tetra-AI-Transcript-${new Date().toISOString().slice(0, 10)}.md`;
     link.click();
     URL.revokeObjectURL(url);
   };

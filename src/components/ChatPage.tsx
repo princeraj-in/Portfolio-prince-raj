@@ -226,36 +226,37 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
       <div className="absolute -bottom-40 right-[-10%] w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Top Header - Glass Studio Navigation */}
-      <header className="relative z-30 border-b border-white/[0.08] bg-[#070b13]/85 backdrop-blur-2xl sticky top-0 px-4 sm:px-8 py-3.5 transition-all">
-        <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
+      <header className="relative z-30 border-b border-white/[0.08] bg-[#070b13]/85 backdrop-blur-2xl sticky top-0 px-3 sm:px-8 py-3 transition-all">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
           {/* Back to Portfolio Button */}
           <button
             id="chat-back-to-portfolio-btn"
             onClick={() => onNavigate('/')}
-            className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.1] hover:border-cyan-500/40 text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition-all cursor-pointer group shadow-sm hover:shadow-[0_0_20px_rgba(6,182,212,0.15)]"
+            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.1] hover:border-cyan-500/40 text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition-all cursor-pointer group shadow-sm hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] flex-shrink-0"
           >
-            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-cyan-400" />
-            <span className="hidden xs:inline">Portfolio</span> Overview
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-cyan-400 flex-shrink-0" />
+            <span className="hidden sm:inline">Portfolio Overview</span>
+            <span className="sm:hidden">Back</span>
           </button>
 
           {/* Center Identity */}
-          <div className="flex items-center gap-3">
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 p-[1.5px] shadow-[0_0_25px_rgba(6,182,212,0.4)]">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="relative flex-shrink-0 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 p-[1.5px] shadow-[0_0_20px_rgba(6,182,212,0.35)]">
               <div className="w-full h-full bg-[#0a0f1d] rounded-[14px] flex items-center justify-center">
-                <Bot className="w-5 h-5 text-cyan-300" />
+                <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-300" />
               </div>
-              <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 border-2 border-[#070b13] rounded-full shadow-[0_0_8px_#34d399]" />
+              <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-emerald-400 border-2 border-[#070b13] rounded-full shadow-[0_0_8px_#34d399]" />
             </div>
-            <div className="text-left">
+            <div className="text-left min-w-0">
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-indigo-500/20 border border-cyan-400/40 shadow-[0_0_20px_rgba(6,182,212,0.35)]">
+                <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-indigo-500/20 border border-cyan-400/40 shadow-[0_0_20px_rgba(6,182,212,0.35)]">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
                   <strong className="text-xs sm:text-sm font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-blue-200 uppercase drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">
                     Tetra AI
                   </strong>
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 font-medium mt-1">
+              <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium mt-0.5 hidden md:block truncate">
                 Prince Raj's Autonomous Portfolio Intelligence
               </p>
             </div>
@@ -328,7 +329,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
 
               <div>
                 <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                  Welcome to <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-300">Tectra AI</span>
+                  Welcome to <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-300">Tetra AI</span>
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mt-1.5 leading-relaxed font-normal">
                   The official portfolio intelligence engine for <strong>Prince Raj</strong>. Ask deep technical questions regarding autonomous agent swarms, production platforms, full-stack architectures, or direct hire opportunities.
@@ -576,7 +577,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={isListening ? 'Listening to voice...' : 'Ask Tectra AI anything about Prince Raj...'}
+              placeholder={isListening ? 'Listening to voice...' : 'Ask Tetra AI anything about Prince Raj...'}
               disabled={isLoading}
               className="w-full bg-transparent border-none px-3 py-2 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-0 disabled:opacity-50 font-medium"
             />
