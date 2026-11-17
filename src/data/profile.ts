@@ -59,8 +59,8 @@ export const profileData: ProfileData = {
     { label: 'Core Arsenal', value: '15+', subtext: 'Modern toolchains' },
   ],
   education: {
-    degree: 'Bachelor of Science in Computer Science & Data Analytics',
+    degree: 'BS in Computer Science & Data Analytics (CSDA)',
     institution: 'Indian Institute of Technology, Patna',
-    status: 'In Progress',
+    status: 'Pursuing',
   },
 };

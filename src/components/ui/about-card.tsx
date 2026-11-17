@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { BrainCircuit, Bot, Code2, Layers, Sparkles, Zap } from 'lucide-react';
+import { BrainCircuit, Bot, Code2, Layers, Sparkles, Zap, GraduationCap } from 'lucide-react';
 import { SpotlightCard } from './spotlight-card';
 import { staggerContainer, itemFadeUp, itemPop } from '../../lib/animations';
+import { profileData } from '../../data/profile';
 
 export const AboutCard: React.FC = () => {
   const pillars = [
@@ -141,6 +142,31 @@ export const AboutCard: React.FC = () => {
                 </p>
                 <p className="text-sm md:text-base font-extrabold text-white break-words">
                   Building Autonomous Agent Architectures & Production-Ready AI Platforms
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Academic Education Banner */}
+            <motion.div
+              variants={itemFadeUp}
+              whileHover={{ scale: 1.01, x: 2 }}
+              className="relative overflow-hidden p-3.5 sm:p-4 rounded-[1.75rem] bg-gradient-to-r from-indigo-600/10 via-blue-500/10 to-cyan-500/5 border border-indigo-400/20 backdrop-blur-xl flex items-center gap-3.5 shadow-[0_4px_20px_rgba(99,102,241,0.12)] group/edu transition-all duration-300 min-w-0"
+            >
+              <div className="absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent pointer-events-none" />
+              <div className="p-2.5 rounded-2xl bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 group-hover/edu:scale-110 group-hover/edu:shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300 flex-shrink-0">
+                <GraduationCap className="w-5 h-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-bold uppercase text-indigo-400 tracking-wider">
+                  Academic Education
+                </p>
+                <p className="text-sm md:text-base font-extrabold text-white break-words">
+                  {profileData.education.degree}
+                </p>
+                <p className="text-xs text-slate-300 mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
+                  <span className="font-semibold text-cyan-300">{profileData.education.institution}</span>
+                  <span aria-hidden="true" className="text-slate-500">·</span>
+                  <span className="text-emerald-400 font-semibold">{profileData.education.status}</span>
                 </p>
               </div>
             </motion.div>

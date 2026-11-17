@@ -1,9 +1,10 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ExternalLink, Award, Sparkles, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { ExternalLink, Award, Sparkles, CheckCircle2, ShieldCheck, GraduationCap } from 'lucide-react';
 import { SpotlightCard } from './ui/spotlight-card';
 import { staggerContainer, staggerGrid, itemFadeUp, itemPop } from '../lib/animations';
 import { credentialsData, type Credential } from '../data/credentials';
+import { profileData } from '../data/profile';
 
 export const CredentialsSection: React.FC = () => {
   return (
@@ -39,6 +40,49 @@ export const CredentialsSection: React.FC = () => {
           >
             Globally accredited certifications in Artificial Intelligence, Cloud Infrastructure, and Machine Learning from Google, IBM, and AWS.
           </motion.p>
+        </motion.div>
+
+        {/* Academic Education Highlight */}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="mb-14"
+        >
+          <motion.div variants={itemFadeUp}>
+            <SpotlightCard
+              className="group relative rounded-[2.2rem] overflow-hidden backdrop-blur-2xl bg-slate-950/75 border border-white/10 shadow-[0_12px_35px_rgba(0,0,0,0.45)] hover:shadow-[0_15px_40px_rgba(99,102,241,0.2)] transition-all duration-300"
+              spotlightColor="rgba(99, 102, 241, 0.22)"
+            >
+              <div className="relative z-10 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+                <div className="absolute inset-x-8 top-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent pointer-events-none" />
+
+                <div className="flex items-start sm:items-center gap-4 min-w-0">
+                  <div className="p-3.5 rounded-2xl bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 flex-shrink-0">
+                    <GraduationCap className="w-6 h-6" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold uppercase tracking-wider text-indigo-400 mb-1">
+                      Academic Education
+                    </p>
+                    <h3 className="text-lg sm:text-xl font-extrabold text-white tracking-tight break-words">
+                      {profileData.education.degree}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-300 mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                      <span className="font-semibold text-cyan-300">
+                        {profileData.education.institution}
+                      </span>
+                      <span aria-hidden="true" className="text-slate-500">·</span>
+                      <span className="text-emerald-400 font-semibold">
+                        {profileData.education.status}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </SpotlightCard>
+          </motion.div>
         </motion.div>
 
         {/* Certifications Header & Grid */}
